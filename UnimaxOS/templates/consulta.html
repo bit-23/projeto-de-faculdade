@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Consulta de Ocorrências</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+</head>
+<body>
+
+<header>
+    <nav class="navbar">
+        <div class="logo">Unimax<span>OS</span></div>
+        <div class="menu">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('abrir_ocorrencia') }}">Operador</a>
+            <a href="{{ url_for('gerir_ocorrencia') }}">Coordenador</a>
+        </div>
+    </nav>
+</header>
+
+<main style="text-align: center; margin-top: 50px;">
+    <h1>Consulta de Ocorrências</h1>
+
+    {% if ocorrencia %}
+        <div class="card" style="display: inline-block; margin-top: 30px; text-align: left; padding: 20px; border-radius: 8px; background-color: #f4f4f4; color: #333;">
+            <h2>Ocorrência ID: {{ ocorrencia.id }}</h2>
+            <p><strong>Setor:</strong> {{ ocorrencia.setor }}</p>
+            <p><strong>Operador:</strong> {{ ocorrencia.operador }}</p>
+            <p><strong>Descrição:</strong> {{ ocorrencia.descricao }}</p>
+            <p><strong>Status:</strong>
+                {% if ocorrencia.status == "Aberto" %}
+                    <span style="color: #856404; font-weight: bold;">Aberto</span>
+                {% else %}
+                    <span style="color: green; font-weight: bold;">Fechado</span>
+                {% endif %}
+            </p>
+            {% if ocorrencia.foto %}
+                <img src="{{ url_for('static', filename=ocorrencia.foto) }}" width="200" style="margin-top: 10px; border-radius: 5px;">
+            {% endif %}
+            {% if ocorrencia.status == "Fechado" %}
+                <p><strong>Técnico:</strong> {{ ocorrencia.tecnico }}</p>
+                <p><strong>Ação realizada:</strong> {{ ocorrencia.acao }}</p>
+            {% else %}
+                <p style="color: #856404; font-weight: bold;">Aguardando análise da coordenação</p>
+            {% endif %}
+        </div>
+    {% else %}
+        <form method="POST" style="margin-top: 30px;">
+            <input type="text" name="id" placeholder="Digite o ID da ocorrência" required style="padding: 8px; width: 200px;">
+            <button type="submit" style="padding: 8px 15px; margin-left: 10px;">Buscar</button>
+        </form>
+    {% endif %}
+</main>
+
+<footer style="text-align: center; margin-top: 50px;">
+    <p>© 2026 UnimaxOS</p>
+</footer>
+
+</body>
+</html>

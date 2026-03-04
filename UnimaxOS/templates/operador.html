@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Operador</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='operador.css') }}">
+    </head>
+    <body>
+        <header>
+            <nav class="navbar">
+                <div class="logo">Unimax<span>OS</span></div>
+                <div class="menu">
+                    <a href="{{ url_for('home') }}">Home</a>
+                    <a href="{{ url_for('consultar_ocorrencia') }}">Consulta</a>
+                    <a href="{{ url_for('gerir_ocorrencia') }}">Coordenador</a>
+                </div>
+            </nav>
+        </header>
+
+        <main style="text-align: center; margin-top: 50px;">
+            <h1>Operador do curso de Engenharia de Software</h1>
+
+            <div class="card">
+                <form method="POST" enctype="multipart/form-data">
+                    <input type="text" name="setor" placeholder="Setor" required style="width: 100%; padding: 8px; margin-bottom: 10px;">
+                    <input type="text" name="operador" placeholder="Operador" required style="width: 100%; padding: 8px; margin-bottom: 10px;">
+                    <textarea name="descricao" placeholder="Descrição da ocorrência" required style="width: 100%; padding: 8px; margin-bottom: 10px;"></textarea>
+                    <input type="file" name="foto" accept=".jpg,.jpeg,.png,.gif" style="margin-bottom: 10px;">
+                    <button type="submit" style="padding: 10px 20px; font-weight: bold; background-color: #28a745; color: white; border: none; border-radius: 5px;">Registrar Ocorrência</button>
+                </form>
+            </div>
+
+        </main>
+
+        <footer style="text-align: center; margin-top: 50px;">
+            <p>© 2026 UnimaxOS</p>
+        </footer>
+
+    </body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Abrir Ocorrência</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+</head>
+<body>
+
+<header>
+    <nav class="navbar">
+        <div class="logo">Unimax<span>OS</span></div>
+        <div class="menu">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('consultar_ocorrencia') }}">Consulta</a>
+            <a href="{{ url_for('gerir_ocorrencia') }}">Coordenador</a>
+        </div>
+    </nav>
+</header>
+
+<main style="text-align: center; margin-top: 50px;">
+    <h1>Abrir Nova Ocorrência</h1>
+
+    <form method="POST" enctype="multipart/form-data" style="margin-top: 30px; display: inline-block; text-align: left; padding: 20px; border-radius: 8px; background-color: #f4f4f4; color: #333; width: 400px;">
+        <label for="setor"><strong>Setor:</strong></label><br>
+        <input type="text" name="setor" id="setor" placeholder="Ex: Bloco A, Laboratório 3" required style="width: 100%; padding: 8px; margin-bottom: 10px;"><br>
+
+        <label for="operador"><strong>Operador:</strong></label><br>
+        <input type="text" name="operador" id="operador" placeholder="Seu nome" required style="width: 100%; padding: 8px; margin-bottom: 10px;"><br>
+
+        <label for="descricao"><strong>Descrição do Problema:</strong></label><br>
+        <textarea name="descricao" id="descricao" placeholder="Detalhe o problema" required style="width: 100%; padding: 8px; margin-bottom: 10px;"></textarea><br>
+
+        <label for="foto"><strong>Foto do Problema:</strong></label><br>
+        <input type="file" name="foto" id="foto" accept="image/*" style="margin-bottom: 10px;"><br>
+
+        <button type="submit" style="padding: 10px 20px; font-weight: bold; background-color: #667eea; color: white; border: none; border-radius: 5px;">Abrir Ocorrência</button>
+    </form>
+
+</main>
+
+<footer style="text-align: center; margin-top: 50px;">
+    <p>© 2026 UnimaxOS</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>UnimaxOS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+</head>
+
+<body>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo"><i>UnimaxOS</i></div>
+
+            <div class="menu">
+                <a href="{{ url_for('consultar_ocorrencia') }}">Consulta</a>
+                <a href="{{ url_for('abrir_ocorrencia') }}">Operador</a>
+                <a href="{{ url_for('gerir_ocorrencia') }}">Coordenador</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Welcome to UnimaxOS</h1>
+        <p>Sistema de Gestão de Ocorrências Universitárias</p>
+    </main>
+
+    <footer>
+        <p>© 2024 UnimaxOS</p>
+    </footer>
+
+</body>
+</html>
