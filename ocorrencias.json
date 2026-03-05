@@ -98,5 +98,45 @@
         "status": "Aberto",
         "tecnico": "",
         "acao": ""
+    },
+    {
+        "id": "11",
+        "setor": "aluno",
+        "operador": "igor",
+        "descricao": "zxd\\dasd",
+        "foto": "",
+        "status": "Aberto",
+        "tecnico": "",
+        "acao": ""
+    },
+    {
+        "id": "12",
+        "setor": "aluno",
+        "operador": "joão",
+        "descricao": "zxd\\dasd",
+        "foto": "static/uploads/12_WhatsApp Image 2026-02-09 at 18.58.12.jpeg",
+        "status": "Aberto",
+        "tecnico": "",
+        "acao": ""
+    },
+    {
+        "id": "13",
+        "setor": "aluno",
+        "operador": "igor",
+        "descricao": "dadasdasdsdasdasd",
+        "foto": "static/uploads/13_Logo moderno de Conexão Digital.png",
+        "status": "Aberto",
+        "tecnico": "",
+        "acao": ""
+    },
+    {
+        "id": "14",
+        "setor": "aluno",
+        "operador": "igor",
+        "descricao": "sadasadad",
+        "foto": "",
+        "status": "Fechado",
+        "tecnico": "igor",
+        "acao": "sei lar"
     }
 ]
