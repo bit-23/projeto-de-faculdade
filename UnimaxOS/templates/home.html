@@ -8,26 +8,35 @@
 
 <body>
 
-    <header>
-        <nav class="navbar">
-            <div class="logo"><i>UnimaxOS</i></div>
+<header>
+    <nav class="navbar">
+        <div class="logo"><i>UnimaxOS</i></div>
 
-            <div class="menu">
-                <a href="{{ url_for('consultar_ocorrencia') }}">Consulta</a>
-                <a href="{{ url_for('abrir_ocorrencia') }}">Operador</a>
-                <a href="{{ url_for('gerir_ocorrencia') }}">Coordenador</a>
-            </div>
-        </nav>
-    </header>
+        <div class="menu">
+            <a href="{{ url_for('consultar_ocorrencia') }}">Consulta</a>
+            <a href="{{ url_for('abrir_ocorrencia') }}">Operador</a>
+            <a href="{{ url_for('gerir_ocorrencia') }}">Coordenador</a>
+        </div>
+    </nav>
+</header>
 
-    <main>
-        <h1>Welcome to UnimaxOS</h1>
-        <p>Sistema de Gestão de Ocorrências Universitárias</p>
-    </main>
+<main style="text-align:center; margin-top:100px;">
 
-    <footer>
-        <p>© 2024 UnimaxOS</p>
-    </footer>
+    <h1>Welcome to UnimaxOS</h1>
+    <p>Sistema de Gestão de Ocorrências Universitárias</p>
+
+    <!-- BOTÃO PRINCIPAL -->
+    <div style="margin-top:40px;">
+        <a href="{{ url_for('abrir_ocorrencia') }}" class="btn-ocorrencia">
+            Abrir Ocorrência
+        </a>
+    </div>
+
+</main>
+
+<footer style="text-align:center; margin-top:100px;">
+    <p>© 2026 UnimaxOS</p>
+</footer>
 
 </body>
 </html>
