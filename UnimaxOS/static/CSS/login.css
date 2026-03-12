@@ -1,0 +1,44 @@
+body{
+    font-family: Arial;
+    background: linear-gradient(135deg,#4e73df,#6f42c1);
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.container{
+    background:white;
+    padding:40px;
+    border-radius:10px;
+    width:300px;
+}
+
+h2{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+input{
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+}
+
+button{
+    width:100%;
+    padding:10px;
+    background:#4e73df;
+    border:none;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#375ac2;
+}
+
+a{
+    color:#4e73df;
+}

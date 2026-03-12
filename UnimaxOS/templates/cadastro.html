@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Cadastro - Sistema de Ocorrências</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='CSS/cadastro.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Criar Conta</h2>
+
+    <form action="/cadastrar" method="POST">
+
+        <label>Email</label>
+        <input type="email" name="email" placeholder="Digite seu email" required>
+
+        <label>Senha</label>
+        <input type="password" name="senha" placeholder="Crie uma senha" required>
+
+        <button type="submit">Cadastrar</button>
+
+    </form>
+
+    <p>
+        Já tem conta?
+        <a href="{{ url_for('login') }}">Fazer login</a>
+    </p>
+
+</div>
+
+</body>
+</html>

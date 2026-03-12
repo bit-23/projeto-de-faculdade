@@ -138,5 +138,145 @@
         "status": "Fechado",
         "tecnico": "igor",
         "acao": "sei lar"
+    },
+    {
+        "id": "15",
+        "setor": "aluno",
+        "operador": "igorsalesleallima@gmail.com",
+        "descricao": "dfasfafaff",
+        "foto": "static/uploads/15_anime-girl-blue-eyes-hd-wallpaper-uhdpaper.com-557@5@h.jpg",
+        "status": "Fechado",
+        "tecnico": "igor",
+        "acao": "dfdasff"
+    },
+    {
+        "id": "16",
+        "setor": "aluno",
+        "operador": "igorsalesleallima@gmail.com",
+        "descricao": "adasdasdadsda",
+        "foto": "static/uploads/16_anime-girl-blue-eyes-hd-wallpaper-uhdpaper.com-557@5@h.jpg",
+        "status": "Aberto",
+        "tecnico": "",
+        "acao": ""
+    },
+    {
+        "id": "17",
+        "setor": "aluno",
+        "operador": "igorsalesleallima@gmail.com",
+        "descricao": "SFSDFF",
+        "foto": "static/uploads/17_anime-girl-alone-flowers-raining-hd-wallpaper-uhdpaper.com-549@5@h.jpg",
+        "status": "Aberto",
+        "tecnico": "",
+        "acao": ""
+    },
+    {
+        "id": "18",
+        "setor": "aluno",
+        "operador": "igorsalesleallima@gmail.com",
+        "descricao": "SDASDASDD",
+        "foto": "static/uploads/18_anime-girl-blue-eyes-hd-wallpaper-uhdpaper.com-557@5@h.jpg",
+        "status": "Aberto",
+        "tecnico": "",
+        "acao": ""
+    },
+    {
+        "id": "19",
+        "setor": "aluno",
+        "operador": "igorsalesleallima@gmail.com",
+        "descricao": "SDASDASDD",
+        "foto": "static/uploads/19_anime-girl-blue-eyes-hd-wallpaper-uhdpaper.com-557@5@h.jpg",
+        "status": "Aberto",
+        "tecnico": "",
+        "acao": ""
+    },
+    {
+        "id": "20",
+        "setor": "aluno",
+        "operador": "igorsalesleallima@gmail.com",
+        "descricao": "aajgdjkhagdkahjgdjkaygdkjgdaskhdajh",
+        "foto": "static/uploads/20_1351027.png",
+        "status": "Aberto",
+        "tecnico": "",
+        "acao": ""
+    },
+    {
+        "id": "21",
+        "setor": "aluno",
+        "operador": "igorsalesleallima@gmail.com",
+        "descricao": "aajgdjkhagdkahjgdjkaygdkjgdaskhdajh",
+        "foto": "static/uploads/21_1351027.png",
+        "status": "Aberto",
+        "tecnico": "",
+        "acao": ""
+    },
+    {
+        "id": "22",
+        "setor": "aluno",
+        "operador": "igorsalesleallima@gmail.com",
+        "descricao": "kjdhakdhklhdklashd",
+        "foto": "",
+        "status": "Aberto",
+        "tecnico": "",
+        "acao": ""
+    },
+    {
+        "id": "23",
+        "setor": "aluno",
+        "operador": "igorsalesleallima@gmail.com",
+        "descricao": "aSSAS",
+        "foto": "static/uploads/23_anime-girl-blue-eyes-hd-wallpaper-uhdpaper.com-557@5@h.jpg",
+        "status": "Aberto",
+        "tecnico": "",
+        "acao": ""
+    },
+    {
+        "id": "24",
+        "setor": "aluno",
+        "operador": "igorsalesleallima@gmail.com",
+        "descricao": "aSSAS",
+        "foto": "static/uploads/24_anime-girl-blue-eyes-hd-wallpaper-uhdpaper.com-557@5@h.jpg",
+        "status": "Aberto",
+        "tecnico": "",
+        "acao": ""
+    },
+    {
+        "id": "25",
+        "setor": "aluno",
+        "operador": "igorsalesleallima@gmail.com",
+        "descricao": "aSSAS",
+        "foto": "static/uploads/25_anime-girl-blue-eyes-hd-wallpaper-uhdpaper.com-557@5@h.jpg",
+        "status": "Aberto",
+        "tecnico": "",
+        "acao": ""
+    },
+    {
+        "id": "26",
+        "setor": "aluno",
+        "operador": "igorsalesleallima@gmail.com",
+        "descricao": "sdadasdd",
+        "foto": "static/uploads/26_macos-tahoe-26-5120x2880-22674.jpg",
+        "status": "Aberto",
+        "tecnico": "",
+        "acao": ""
+    },
+    {
+        "id": "27",
+        "setor": "aluno",
+        "operador": "igorsalesleallima@gmail.com",
+        "descricao": "asdasddad",
+        "foto": "",
+        "status": "Aberto",
+        "tecnico": "",
+        "acao": ""
+    },
+    {
+        "id": "28",
+        "setor": "predio amarelo",
+        "operador": "igor.lima777@al.unieduk.com.br",
+        "descricao": "quebrou o microfone",
+        "foto": "",
+        "status": "Fechado",
+        "tecnico": "igor",
+        "acao": "ja consertei"
     }
 ]

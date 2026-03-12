@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Login - Sistema de Ocorrências</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='CSS/login.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Login do Operador</h2>
+
+    <form action="/login" method="POST">
+
+        <label>Email</label>
+        <input type="email" name="email" placeholder="Digite seu email" required>
+
+        <label>Senha</label>
+        <input type="password" name="senha" placeholder="Digite sua senha" required>
+
+        <button type="submit">Entrar</button>
+
+    </form>
+
+    <p>
+        Não tem conta?
+        <a href="/cadastro">Cadastrar</a>
+    </p>
+
+</div>
+
+</body>
+</html>
