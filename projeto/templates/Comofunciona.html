@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Como Funciona?</title>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">ServiConnect</div>
+    <nav>
+        <a href="{{ url_for('main.home') }}">Home</a>
+        <a href="{{ url_for('main.categoria') }}">Categorias</a>
+        <a href="{{ url_for('main.login') }}">Login</a>
+    </nav>
+</header>
+
+<section class="como-funciona">
+    <h1>Como Funciona?</h1>
+    <p>Veja como é simples contratar ou oferecer serviços na nossa plataforma.</p>
+
+    <div class="passos">
+
+        <div class="passo">
+            <h3>1. Crie sua conta</h3>
+            <p>Faça seu cadastro rápido e gratuito para começar a usar a plataforma.</p>
+        </div>
+
+        <div class="passo">
+            <h3>2. Escolha uma categoria</h3>
+            <p>Selecione o tipo de serviço que você precisa, como elétrica, limpeza ou design.</p>
+        </div>
+
+        <div class="passo">
+            <h3>3. Encontre profissionais</h3>
+            <p>Veja profissionais disponíveis com avaliações e escolha o melhor para você.</p>
+        </div>
+
+        <div class="passo">
+            <h3>4. Solicite o serviço</h3>
+            <p>Entre em contato e combine os detalhes diretamente pela plataforma.</p>
+        </div>
+
+        <div class="passo">
+            <h3>5. Avalie o serviço</h3>
+            <p>Depois do serviço, deixe sua avaliação para ajudar outros usuários.</p>
+        </div>
+
+    </div>
+
+    <div class="video-container">
+        <video controls>
+            <source src="{{ url_for('static', filename='videos/video.mp4') }}" type="video/mp4">
+            Seu navegador não suporta vídeo.
+        </video>
+    </div>
+
+</section>
+
+</body>
+</html>

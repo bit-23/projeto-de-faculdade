@@ -3,74 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <title>Escolher Categoria</title>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f6f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .card {
-            background: white;
-            padding: 30px;
-            width: 400px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            background: #2d89ef;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #1b5fad;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Style.css') }}">
 </head>
 
 <body>
 
-<div class="card">
-    <h2>Escolha sua Categoria</h2>
+<header>
+    <div class="logo">ServiConnect</div>
+    <nav>
+        <a href="{{ url_for('main.home') }}">Home</a>
+        <a href="{{ url_for('main.login') }}">Login</a>
+    </nav>
+</header>
 
-    <form action="/categoria" method="POST">
+<section class="categorias">
+    <h2>Escolha uma Categoria</h2>
 
-        <select name="categoria" required>
-            <option value="">Selecione uma categoria</option>
-            <option value="eletricista">Eletricista</option>
-            <option value="encanador">Encanador</option>
-            <option value="programador">Programador</option>
-            <option value="designer">Designer</option>
-            <option value="limpeza">Limpeza</option>
-        </select>
+    <form method="POST">
+        <div class="cards">
 
-        <button type="submit">Confirmar</button>
+            <label class="card-option">
+                <input type="radio" name="categoria" value="eletricista" required>
+                <div class="card-content">
+                    🔌
+                    <p>Eletricista</p>
+                </div>
+            </label>
 
+            <label class="card-option">
+                <input type="radio" name="categoria" value="encanador">
+                <div class="card-content">
+                    🚰
+                    <p>Encanador</p>
+                </div>
+            </label>
+
+            <label class="card-option">
+                <input type="radio" name="categoria" value="programador">
+                <div class="card-content">
+                    💻
+                    <p>Programador</p>
+                </div>
+            </label>
+
+            <label class="card-option">
+                <input type="radio" name="categoria" value="designer">
+                <div class="card-content">
+                    🎨
+                    <p>Designer</p>
+                </div>
+            </label>
+
+            <label class="card-option">
+                <input type="radio" name="categoria" value="limpeza">
+                <div class="card-content">
+                    🧹
+                    <p>Limpeza</p>
+                </div>
+            </label>
+
+        </div>
+
+        <button type="submit" class="btn-confirmar">Confirmar</button>
     </form>
-</div>
+
+</section>
 
 </body>
 </html>

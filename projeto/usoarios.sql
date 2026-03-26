@@ -6,3 +6,5 @@ CREATE TABLE usuarios (
     email VARCHAR(150) NOT NULL UNIQUE,
     senha VARCHAR(255) NOT NULL
 );
+
+FROM TABLE usuarios

@@ -1,23 +1,29 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+
     <meta charset="UTF-8">
     <title>ServiConnect</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Style.css') }}">
+    <script src="{{ url_for('static', filename='codefront.js') }}"></script>
+
 </head>
 <body>
 
 <header>
+
     <div class="logo">ServiConnect</div>
     <nav>
-        <a href="#">Como Funciona</a>
-        <a href="categoria.html">Categorias</a>
-        <a href="login.html">Login</a>
-        <a href="cadastro.html" class="btn">Cadastrar</a>
+        <a href="{{url_for('main.ComoFunciona')}}">Como Funciona</a>
+        <a href="{{url_for('main.categoria')}}">Categorias</a>
+        <a href="{{url_for('main.login')}}">Login</a>
+        <a href="{{url_for('main.cadastro')}}" class="btn">Cadastrar</a>
     </nav>
+    
 </header>
 
 <section class="hero">
+
     <div class="hero-text">
         <h1>Encontre o profissional ideal</h1>
         <p>Conectamos clientes aos melhores prestadores de serviço da sua região.</p>
@@ -26,15 +32,29 @@
             <a href="#" class="btn-secondary">Sou Prestador</a>
         </div>
     </div>
+
+    <!-- ONDA AQUI 👇 -->
+
+  <div class="wave wave1">
+    <svg viewBox="0 0 1440 320" preserveAspectRatio="none">
+        <path fill="#ffffff20" d="M0,192L60,176C120,160,240,128,360,117.3C480,107,600,117,720,138.7C840,160,960,192,1080,202.7C1200,213,1320,203,1380,197.3L1440,192V320H0Z"></path>
+    </svg>
+
+    <svg viewBox="0 0 1440 320" preserveAspectRatio="none">
+        <path fill="#ffffff20" d="M0,192L60,176C120,160,240,128,360,117.3C480,107,600,117,720,138.7C840,160,960,192,1080,202.7C1200,213,1320,203,1380,197.3L1440,192V320H0Z"></path>
+    </svg>
+  </div>
+
+
 </section>
 
 <section class="categorias">
     <h2>Categorias Populares</h2>
     <div class="cards">
-        <div class="card">🔧 Reparos</div>
-        <div class="card">🎨 Pintura</div>
-        <div class="card">💻 Informática</div>
-        <div class="card">📦 Mudança</div>
+        <div class="card">🔧 <br>Reparos</div>
+        <div class="card">🎨 <br>Pintura</div>
+        <div class="card">💻 <br>Informática</div>
+        <div class="card">📦 <br>Mudança</div>
     </div>
 </section>
 

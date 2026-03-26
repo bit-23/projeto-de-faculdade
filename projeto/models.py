@@ -29,6 +29,3 @@ def conectar():
             cursor.close()
             connection.close()
             print("Conexão MySQL foi encerrada")
-
-if __name__ == "__main__":
-    conectar()
