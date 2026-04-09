@@ -17,15 +17,27 @@
 </header>
 
 <div class="login-container">
-    <div class="login-box">
+    <div class="card">
         <h2>Criar Conta</h2>
+
+        {% if erro %}
+        <p class="erro-msg">{{ erro }}</p>
+        {% endif %}
 
         <form action="/cadastro" method="POST">
             <input type="text" name="nome" placeholder="Nome completo" required>
 
             <input type="email" name="email" placeholder="Email" required>
 
-            <input type="password" name="senha" placeholder="Senha" required>
+            <input type="text" name="CPF" placeholder="CPF" required>
+
+            <div class="input-wrapper">
+                <input type="password" id="senha-cadastro" name="senha" placeholder="Senha" required>
+                <svg class="eye-icon" id="toggle-senha-cadastro" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                </svg>
+            </div>
 
             <button type="submit">Cadastrar</button>
         </form>
@@ -36,5 +48,6 @@
     </div>
 </div>
 
+<script src="{{ url_for('static', filename='js/codefront.js') }}"></script>
 </body>
 </html>

@@ -1,83 +1,206 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-
     <meta charset="UTF-8">
-    <title>ServiConnect</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ServiConnect - Encontre o profissional ideal</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/Style.css') }}">
-    <script src="{{ url_for('static', filename='codefront.js') }}"></script>
-
+    <script src="{{ url_for('static', filename='js/codefront.js') }}"></script>
 </head>
 <body>
 
+<!-- ===== HEADER ===== -->
 <header>
-
     <div class="logo">ServiConnect</div>
     <nav>
-        <a href="{{url_for('main.ComoFunciona')}}">Como Funciona</a>
-        <a href="{{url_for('main.categoria')}}">Categorias</a>
-        <a href="{{url_for('main.login')}}">Login</a>
-        <a href="{{url_for('main.cadastro')}}" class="btn">Cadastrar</a>
+        <a href="#servicos">Serviços</a>
+        <a href="#como-funciona">Como Funciona</a>
+        <a href="#depoimentos">Depoimentos</a>
+        <a href="{{ url_for('main.login') }}">Login</a>
+        <a href="{{ url_for('main.cadastro') }}" class="btn">Cadastrar</a>
     </nav>
-    
 </header>
 
+<!-- ===== HERO ===== -->
 <section class="hero">
-
     <div class="hero-text">
-        <h1>Encontre o profissional ideal</h1>
-        <p>Conectamos clientes aos melhores prestadores de serviço da sua região.</p>
+        <h1>Encontre o profissional ideal para qualquer serviço</h1>
+        <p>Conectamos você aos melhores prestadores de serviço da sua região. Rápido, fácil e confiável.</p>
         <div class="buttons">
-            <a href="#" class="btn-primary">Sou Cliente</a>
-            <a href="#" class="btn-secondary">Sou Prestador</a>
+            <a href="{{ url_for('main.cadastro') }}" class="btn-primary">Criar Conta</a>
+            <a href="#como-funciona" class="btn-secondary">Saiba Mais</a>
         </div>
     </div>
-
-    <!-- ONDA AQUI 👇 -->
-
-  <div class="wave wave1">
-    <svg viewBox="0 0 1440 320" preserveAspectRatio="none">
-        <path fill="#ffffff20" d="M0,192L60,176C120,160,240,128,360,117.3C480,107,600,117,720,138.7C840,160,960,192,1080,202.7C1200,213,1320,203,1380,197.3L1440,192V320H0Z"></path>
-    </svg>
-
-    <svg viewBox="0 0 1440 320" preserveAspectRatio="none">
-        <path fill="#ffffff20" d="M0,192L60,176C120,160,240,128,360,117.3C480,107,600,117,720,138.7C840,160,960,192,1080,202.7C1200,213,1320,203,1380,197.3L1440,192V320H0Z"></path>
-    </svg>
-  </div>
-
-
-</section>
-
-<section class="categorias">
-    <h2>Categorias Populares</h2>
-    <div class="cards">
-        <div class="card">🔧 <br>Reparos</div>
-        <div class="card">🎨 <br>Pintura</div>
-        <div class="card">💻 <br>Informática</div>
-        <div class="card">📦 <br>Mudança</div>
+    <div class="hero-image">
+        <img src="{{ url_for('static', filename='PNG/Logotipo do Connecting Service.png') }}" alt="ServiConnect">
     </div>
 </section>
 
-<section class="como-funciona">
+<!-- ===== ESTATÍSTICAS ===== -->
+<section class="stats">
+    <div class="stat">
+        <span class="stat-num">+5.000</span>
+        <span class="stat-label">Profissionais</span>
+    </div>
+    <div class="stat">
+        <span class="stat-num">+12.000</span>
+        <span class="stat-label">Serviços Realizados</span>
+    </div>
+    <div class="stat">
+        <span class="stat-num">98%</span>
+        <span class="stat-label">Satisfação</span>
+    </div>
+    <div class="stat">
+        <span class="stat-num">+50</span>
+        <span class="stat-label">Cidades</span>
+    </div>
+</section>
+
+<!-- ===== SERVIÇOS ===== -->
+<section id="servicos" class="categorias">
+    <h2>Categorias Populares</h2>
+    <p class="section-sub">Encontre profissionais nas áreas que você mais precisa</p>
+    <div class="cards">
+        <div class="card">
+            <div class="card-icon">🔧</div>
+            <h3>Reparos</h3>
+            <p>Encanador, eletricista e manutenções gerais</p>
+        </div>
+        <div class="card">
+            <div class="card-icon">🎨</div>
+            <h3>Pintura</h3>
+            <p>Pintura residencial e comercial</p>
+        </div>
+        <div class="card">
+            <div class="card-icon">💻</div>
+            <h3>Informática</h3>
+            <p>Suporte técnico e manutenção de computadores</p>
+        </div>
+        <div class="card">
+            <div class="card-icon">📦</div>
+            <h3>Mudança</h3>
+            <p>Transporte e montagem de móveis</p>
+        </div>
+        <div class="card">
+            <div class="card-icon">🧹</div>
+            <h3>Limpeza</h3>
+            <p>Limpeza residencial e pós-obra</p>
+        </div>
+        <div class="card">
+            <div class="card-icon">🏗️</div>
+            <h3>Reforma</h3>
+            <p>Pedreiro, gesseiro e obras em geral</p>
+        </div>
+    </div>
+</section>
+
+<!-- ===== POR QUE ESCOLHER ===== -->
+<section class="vantagens">
+    <h2>Por que escolher o ServiConnect?</h2>
+    <div class="vantagens-grid">
+        <div class="vantagem">
+            <div class="vantagem-icon">🛡️</div>
+            <h3>Profissionais Verificados</h3>
+            <p>Todos os prestadores são avaliados pela nossa equipe para garantir sua segurança.</p>
+        </div>
+        <div class="vantagem">
+            <div class="vantagem-icon">⚡</div>
+            <h3>Rápido e Prático</h3>
+            <p>Descreva o que precisa e receba propostas em poucos minutos.</p>
+        </div>
+        <div class="vantagem">
+            <div class="vantagem-icon">💬</div>
+            <h3>Chat Integrado</h3>
+            <p>Converse com o profissional e combine tudo direto na plataforma.</p>
+        </div>
+        <div class="vantagem">
+            <div class="vantagem-icon">⭐</div>
+            <h3>Avaliações Reais</h3>
+            <p>Veja a experiência de outros clientes antes de contratar.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ===== COMO FUNCIONA ===== -->
+<section id="como-funciona" class="como-funciona">
     <h2>Como Funciona</h2>
     <div class="passos">
-        <div>
-            <h3>1️⃣ Descreva</h3>
-            <p>Conte o que você precisa.</p>
+        <div class="passo">
+            <div class="passo-num">1</div>
+            <h3>Descreva</h3>
+            <p>Conte o que você precisa com detalhes para encontrar o profissional certo.</p>
         </div>
-        <div>
-            <h3>2️⃣ Receba propostas</h3>
-            <p>Profissionais enviam ofertas.</p>
+        <div class="passo">
+            <div class="passo-num">2</div>
+            <h3>Receba Propostas</h3>
+            <p>Profissionais qualificados enviam suas ofertas e você compara.</p>
         </div>
-        <div>
-            <h3>3️⃣ Escolha</h3>
-            <p>Compare e contrate.</p>
+        <div class="passo">
+            <div class="passo-num">3</div>
+            <h3>Escolha e Contrate</h3>
+            <p>Compare preços, avaliações e contrate o melhor para você.</p>
         </div>
     </div>
 </section>
 
+<!-- ===== DEPOIMENTOS ===== -->
+<section id="depoimentos" class="depoimentos">
+    <h2>O que dizem nossos usuários</h2>
+    <div class="depoimentos-grid">
+        <div class="depoimento">
+            <div class="depoimento-text">"Encontrei um excelente eletricista em menos de 10 minutos. Super recomendo!"</div>
+            <div class="depoimento-autor">
+                <strong>Maria Silva</strong>
+                <span>Cliente desde 2025</span>
+            </div>
+        </div>
+        <div class="depoimento">
+            <div class="depoimento-text">"Como prestador de serviço, o ServiConnect triplicou meus clientes em 2 meses."</div>
+            <div class="depoimento-autor">
+                <strong>João Santos</strong>
+                <span>Prestador desde 2025</span>
+            </div>
+        </div>
+        <div class="depoimento">
+            <div class="depoimento-text">"A plataforma é muito fácil de usar e os profissionais são ótimos. Usei para uma reforma completa."</div>
+            <div class="depoimento-autor">
+                <strong>Ana Costa</strong>
+                <span>Cliente desde 2026</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="cta">
+    <h2>Pronto para encontrar o profissional ideal?</h2>
+    <p>Crie sua conta agora e conecte-se aos melhores prestadores da sua região.</p>
+    <a href="{{ url_for('main.cadastro') }}" class="btn-primary">Começar Agora</a>
+</section>
+
+<!-- ===== FOOTER ===== -->
 <footer>
-    <p>© 2026 ServiConnect - Todos os direitos reservados.</p>
+    <div class="footer-content">
+        <div class="footer-col">
+            <div class="logo">ServiConnect</div>
+            <p>Conectando clientes e profissionais de serviço de forma fácil e confiável.</p>
+        </div>
+        <div class="footer-col">
+            <h4>Links</h4>
+            <a href="#servicos">Serviços</a>
+            <a href="#como-funciona">Como Funciona</a>
+            <a href="{{ url_for('main.login') }}">Login</a>
+            <a href="{{ url_for('main.cadastro') }}">Cadastro</a>
+        </div>
+        <div class="footer-col">
+            <h4>Contato</h4>
+            <p>contato@serviconect.com</p>
+            <p>(00) 0000-0000</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 ServiConnect - Todos os direitos reservados.</p>
+    </div>
 </footer>
 
 </body>

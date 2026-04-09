@@ -1,0 +1,250 @@
+@startuml ServiConnect-UML
+
+skinparam backgroundColor #f9f9f9
+skinparam defaultFontSize 13
+skinparam classAttributeIconSize 0
+skinparam roundcorner 8
+skinparam shadowing false
+skinparam linetype ortho
+
+title ServiConnect - Diagrama de Classes (modelo GetNinja)
+
+' ===== AUTENTICACAO =====
+
+package "Autenticação" {
+    class Usuario {
+        + int id
+        + String nome
+        + String email
+        + String cpf
+        + String telefone
+        + String senha
+        + String cidade
+        + String tipo
+        + register()
+        + login()
+        + logout()
+        + atualizarPerfil()
+        + deletarConta()
+    }
+
+    class GoogleAuth {
+        + String client_id
+        + String client_secret
+        + String redirect_uri
+        + autenticar()
+        + callback()
+        + extrairDadosUsuario()
+    }
+
+    class Sessao {
+        + String session_id
+        + int user_id
+        + String user_nome
+        + String categoria
+        + criarSessao()
+        + destruirSessao()
+        + renovarToken()
+    }
+}
+
+Usuario "1" -- "1" Sessao : possui
+
+GoogleAuth ..> Usuario : cria ou recupera
+
+' ===== CLIENTE E PROFISSIONAL =====
+
+package "Usuários" {
+    class Cliente {
+        + String preferencias
+        + listarSolicitacoes()
+        + criarSolicitacao()
+        + aceitarProposta()
+        + avaliarProfissional()
+        + historicoServicos()
+    }
+
+    class Profissional {
+        + Double notaMedia
+        + int totalAvaliacoes
+        + List<String> categorias
+        + bool verificado
+        + cadastrarCategorias()
+        + enviarProposta()
+        + avaliarCliente()
+        + portfolio()
+    }
+
+    class Categoria {
+        + int id
+        + String nome
+        + String descricao
+        + int qtdProfissionais
+    }
+}
+
+Usuario <|-- Cliente : herda
+Usuario <|-- Profissional : herda
+
+Profissional "*" -- "*" Categoria : atua_em
+
+' ===== SOLICITACAO DE SERVICO =====
+
+package "Serviços" {
+    class SolicitacaoServico {
+        + int id
+        + String descricao
+        + String endereco
+        + String status
+        + Date dataCriacao
+        + Date dataExecucao
+        + Double orcamento
+        + criar()
+        + editar()
+        + cancelar()
+        + concluir()
+        + listarPropostas()
+        + aceitarProposta()
+    }
+
+    class Proposta {
+        + int id
+        + Double preco
+        + String descricao
+        + String status
+        + Date dataEnvio
+        + enviar()
+        + cancelar()
+        + aceitar()
+        + recusar()
+    }
+
+    class ServicoContratado {
+        + int id
+        + Date dataInicio
+        + Date dataFim
+        + Double valorFinal
+        + String status
+        + iniciar()
+        + finalizar()
+        + registrarPagamento()
+    }
+}
+
+Cliente "1" -- "*" SolicitacaoServico : cria
+
+Profissional "1" -- "*" Proposta : envia
+
+SolicitacaoServico "1" -- "*" Proposta : recebe
+
+SolicitacaoServico "1" -- "0..1" ServicoContratado : gera
+
+Proposta "1" --> Profissional : feita_por
+Proposta "1" --> SolicitacaoServico : refere_se_a
+
+' ===== AVALIACAO =====
+
+package "Avaliação" {
+    class Avaliacao {
+        + int id
+        + int nota
+        + String comentario
+        + Date data
+        + criar()
+        + editar()
+        + excluir()
+        + calcularMedia()
+    }
+}
+
+Cliente "1" -- "*" Avaliacao : faz_sobre
+Profissional "1" -- "*" Avaliacao : recebe
+Avaliacao -- Profissional : impacta_nota
+
+' ===== MODELO DE DADOS =====
+
+package "Persistência" {
+    class DBMySQL {
+        + String host
+        + String database
+        + String user
+        + String password
+        + conectar()
+        + desconectar()
+        + executarQuery()
+    }
+
+    class usuarios {
+        + int id
+        + String nome
+        + String email
+        + String cpf
+        + String senha
+    }
+}
+
+DBMySQL ..> usuarios : gerencia
+
+Usuario ..> DBMySQL : usa
+SolicitacaoServico ..> DBMySQL : usa
+Proposta ..> DBMySQL : usa
+Avaliacao ..> DBMySQL : usa
+
+' ===== FRONTEND =====
+
+package "Frontend" {
+    class LandingPage {
+        + HeroSection
+        + StatsSection
+        + CategoriasGrid
+        + VantagensSection
+        + DepoimentosSection
+        + CTASection
+        + Footer
+    }
+
+    class FormLogin {
+        + validarEmail()
+        + toggleSenha()
+        + submit()
+    }
+
+    class FormCadastro {
+        + validarEmail()
+        + validarCPF()
+        + verificarForcaSenha()
+        + mascaraCPF()
+        + submit()
+    }
+
+    class FormSolicitacao {
+        + selecionarCategoria()
+        + descreverServico()
+        + informarEndereco()
+        + enviar()
+    }
+
+    class PainelCliente {
+        + verSolicitacoes()
+        + verPropostas()
+        + aceitarProposta()
+        + avaliarProfissional()
+    }
+
+    class PainelProfissional {
+        + verOportunidades()
+        + enviarProposta()
+        + verServicosAtivos()
+        + avaliarCliente()
+    }
+}
+
+FormLogin ..> Sessao : cria
+FormCadastro ..> Usuario : cria
+LandingPage --> FormCadastro : redireciona
+FormSolicitacao --> SolicitacaoServico : cria
+PainelCliente -- Cliente : pertence_a
+PainelProfissional -- Profissional : pertence_a
+FormLogin ..> GoogleAuth : pode_usar
+
+@enduml
