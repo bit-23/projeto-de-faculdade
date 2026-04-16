@@ -103,7 +103,7 @@ def google_login():
     redirect_uri = url_for("main.google_callback", _external=True)
     return oauth.google.authorize_redirect(redirect_uri)
 
-@main.route("/login/google/callback")
+@main.route("/login/google/callback")# APi de verificação 
 def google_callback():
     try:
         token = oauth.google.authorize_access_token()
