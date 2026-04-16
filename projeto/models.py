@@ -7,7 +7,7 @@ def conectar():
     try:
         connection = mysql.connector.connect(
             host='127.0.0.1:3306',          # ou o IP do servidor
-            database='faculdade',  # nome do seu banco de dados
+            database='ServiceConnect',  # nome do seu banco de dados
             user='root',               # seu usuário do MySQL
             password='h8x1e0k7'    # sua senha do MySQL
         )

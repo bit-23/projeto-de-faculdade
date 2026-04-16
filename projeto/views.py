@@ -28,20 +28,25 @@ def cadastro():
 def cadastro_post():
     nome = request.form.get("nome", "").strip()
     email = request.form.get("email", "").strip()
-    cpf = request.form.get("CPF", "").strip()
+    cpf = request.form.get("cpf", "").strip()
     senha = request.form.get("senha")
+
+    if not nome or not email or not cpf or not senha:
+        return render_template("cadastro.html", erro="Preencha todos os campos.")
+
+    conn = None
+    cursor = None
 
     try:
         conn = mysql.connector.connect(
             host="127.0.0.1",
             port=3306,
-            database="faculdade",
+            database="ServiceConnect",
             user="root",
             password="h8x1e0k7",
         )
-        cursor = conn.cursor(dictionary=True)
+        cursor = conn.cursor()
 
-        # Verifica se email ou CPF já existem
         cursor.execute(
             "SELECT * FROM usuarios WHERE email = %s OR cpf = %s",
             (email, cpf),
@@ -49,48 +54,37 @@ def cadastro_post():
         existente = cursor.fetchone()
 
         if existente:
-            if existente.get("email") == email:
-                cursor.close()
-                conn.close()
-                return render_template(
-                    "cadastro.html",
-                    erro="Este email já está cadastrado.",
-                )
-
-            if existente.get("cpf") == cpf:
-                cursor.close()
-                conn.close()
-                return render_template(
-                    "cadastro.html",
-                    erro="Este CPF já está cadastrado.",
-                )
+            return render_template("cadastro.html", erro="Email ou CPF já cadastrado.")
 
         cursor.execute(
-            "INSERT INTO usuarios (nome, email, cpf, senha) VALUES (%s, %s, %s, %s)",
+            "INSERT INTO usuarios  (nome, email, cpf, senha) VALUES (%s, %s, %s, %s)",
             (nome, email, cpf, senha),
         )
         conn.commit()
+
         session["user_id"] = cursor.lastrowid
         session["user_nome"] = nome
 
-        cursor.close()
-        conn.close()
-
     except Exception as e:
-        print("Erro ao cadastrar:", e)
-        return render_template("cadastro.html", erro="Erro ao criar conta. Tente novamente.")
+        return f"Erro ao cadastrar: {e}"
 
-    return redirect(url_for("main.home"))
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+
+    return redirect(url_for("main.pagina_home"))
 
 @main.route("/categoria")
 def categoria():
     return render_template("categoria.html")
 
-@main.route("/Categoria", methods=["POST"])
+@main.route("/categoria", methods=["POST"])
 def salvar_categoria():
     categoria = request.form.get("categoria")
     session["categoria"] = categoria
-    return redirect(url_for("main.home"))
+    return redirect(url_for("main.pagina_home"))
 
 @main.route("/ComoFunciona")
 def ComoFunciona():
@@ -123,7 +117,7 @@ def google_callback():
         conn = mysql.connector.connect(
             host="127.0.0.1",
             port=3306,
-            database="faculdade",
+            database="ServiceConnect",
             user="root",
             password="h8x1e0k7",
         )
@@ -143,7 +137,7 @@ def google_callback():
             session["user_id"] = cursor.lastrowid
             session["user_nome"] = nome
         else:
-            session["user_id"] = usuario.get("id")
+            session["user_id"] = usuario.get("idUsuarios")
             session["user_nome"] = usuario.get("nome")
 
         cursor.close()
@@ -154,3 +148,20 @@ def google_callback():
         return redirect(url_for("main.login"))
 
     return redirect(url_for("main.home"))
+
+# ===== Pagina de Perfil de Usuario =====
+
+#@main.route("/perfil")
+#def usuario():
+    #if "user_id" not in session:
+     #   return redirect(url_for("main.login"))
+
+    #return render_template("perfil.html") # em manutenção.
+
+@main.route('/buscar')
+def buscar_serviços():
+    return render_template("buscar.html")
+
+@main.route('/procura')
+def procura_serviços():
+    return render_template("procura.html")
