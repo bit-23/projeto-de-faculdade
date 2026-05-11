@@ -73,3 +73,11 @@ if __name__ == "__main__":
     # print(inverter_lista([1,2,3]))   # esperado: [3,2,1]
     # print(matriz_espiral([[1,2,3],[4,5,6],[7,8,9]]))
     # esperado: [1,2,3,6,9,8,7,4,5]
+
+
+
+# teste basic ()
+
+def namo(adeva):
+	adeva=int(input("escreva um numero: \n"))
+	

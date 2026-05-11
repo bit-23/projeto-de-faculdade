@@ -1,0 +1,1175 @@
+table inet firewalld { # progname firewalld
+	flags owner,persist
+
+	chain mangle_PREROUTING {
+		type filter hook prerouting priority mangle + 10; policy accept;
+		jump mangle_PREROUTING_POLICIES
+	}
+
+	chain mangle_PREROUTING_POLICIES {
+		iifname "br-c42e98442934" jump mangle_PRE_policy_allow-host-ipv6
+		iifname "br-c42e98442934" jump mangle_PRE_docker
+		iifname "br-c42e98442934" return
+		iifname "br-d1dce6da805d" jump mangle_PRE_policy_allow-host-ipv6
+		iifname "br-d1dce6da805d" jump mangle_PRE_docker
+		iifname "br-d1dce6da805d" return
+		iifname "br-eca39204850b" jump mangle_PRE_policy_allow-host-ipv6
+		iifname "br-eca39204850b" jump mangle_PRE_docker
+		iifname "br-eca39204850b" return
+		iifname "docker0" jump mangle_PRE_policy_allow-host-ipv6
+		iifname "docker0" jump mangle_PRE_docker
+		iifname "docker0" return
+		iifname "enp8s0" jump mangle_PRE_policy_allow-host-ipv6
+		iifname "enp8s0" jump mangle_PRE_public
+		iifname "enp8s0" return
+		iifname "br-*" jump mangle_PRE_policy_allow-host-ipv6
+		iifname "br-*" jump mangle_PRE_trusted
+		iifname "br-*" return
+		jump mangle_PRE_policy_allow-host-ipv6
+		jump mangle_PRE_public
+		return
+	}
+
+	chain nat_PREROUTING {
+		type nat hook prerouting priority dstnat + 10; policy accept;
+		jump nat_PREROUTING_POLICIES
+	}
+
+	chain nat_PREROUTING_POLICIES {
+		iifname "br-c42e98442934" jump nat_PRE_policy_allow-host-ipv6
+		iifname "br-c42e98442934" jump nat_PRE_docker
+		iifname "br-c42e98442934" return
+		iifname "br-d1dce6da805d" jump nat_PRE_policy_allow-host-ipv6
+		iifname "br-d1dce6da805d" jump nat_PRE_docker
+		iifname "br-d1dce6da805d" return
+		iifname "br-eca39204850b" jump nat_PRE_policy_allow-host-ipv6
+		iifname "br-eca39204850b" jump nat_PRE_docker
+		iifname "br-eca39204850b" return
+		iifname "docker0" jump nat_PRE_policy_allow-host-ipv6
+		iifname "docker0" jump nat_PRE_docker
+		iifname "docker0" return
+		iifname "enp8s0" jump nat_PRE_policy_allow-host-ipv6
+		iifname "enp8s0" jump nat_PRE_public
+		iifname "enp8s0" return
+		iifname "br-*" jump nat_PRE_policy_allow-host-ipv6
+		iifname "br-*" jump nat_PRE_trusted
+		iifname "br-*" return
+		jump nat_PRE_policy_allow-host-ipv6
+		jump nat_PRE_public
+		return
+	}
+
+	chain nat_POSTROUTING {
+		type nat hook postrouting priority srcnat + 10; policy accept;
+		jump nat_POSTROUTING_POLICIES
+	}
+
+	chain nat_POSTROUTING_POLICIES {
+		iifname "br-c42e98442934" oifname "br-c42e98442934" jump nat_POST_policy_docker-forwarding
+		iifname "br-c42e98442934" oifname "br-c42e98442934" jump nat_POST_docker
+		iifname "br-c42e98442934" oifname "br-c42e98442934" return
+		iifname "br-d1dce6da805d" oifname "br-c42e98442934" jump nat_POST_policy_docker-forwarding
+		iifname "br-d1dce6da805d" oifname "br-c42e98442934" jump nat_POST_docker
+		iifname "br-d1dce6da805d" oifname "br-c42e98442934" return
+		iifname "br-eca39204850b" oifname "br-c42e98442934" jump nat_POST_policy_docker-forwarding
+		iifname "br-eca39204850b" oifname "br-c42e98442934" jump nat_POST_docker
+		iifname "br-eca39204850b" oifname "br-c42e98442934" return
+		iifname "docker0" oifname "br-c42e98442934" jump nat_POST_policy_docker-forwarding
+		iifname "docker0" oifname "br-c42e98442934" jump nat_POST_docker
+		iifname "docker0" oifname "br-c42e98442934" return
+		iifname "enp8s0" oifname "br-c42e98442934" jump nat_POST_policy_docker-forwarding
+		iifname "enp8s0" oifname "br-c42e98442934" jump nat_POST_docker
+		iifname "enp8s0" oifname "br-c42e98442934" return
+		iifname "br-*" oifname "br-c42e98442934" jump nat_POST_policy_docker-forwarding
+		iifname "br-*" oifname "br-c42e98442934" jump nat_POST_docker
+		iifname "br-*" oifname "br-c42e98442934" return
+		oifname "br-c42e98442934" jump nat_POST_policy_docker-forwarding
+		oifname "br-c42e98442934" jump nat_POST_docker
+		oifname "br-c42e98442934" return
+		iifname "br-c42e98442934" oifname "br-d1dce6da805d" jump nat_POST_policy_docker-forwarding
+		iifname "br-c42e98442934" oifname "br-d1dce6da805d" jump nat_POST_docker
+		iifname "br-c42e98442934" oifname "br-d1dce6da805d" return
+		iifname "br-d1dce6da805d" oifname "br-d1dce6da805d" jump nat_POST_policy_docker-forwarding
+		iifname "br-d1dce6da805d" oifname "br-d1dce6da805d" jump nat_POST_docker
+		iifname "br-d1dce6da805d" oifname "br-d1dce6da805d" return
+		iifname "br-eca39204850b" oifname "br-d1dce6da805d" jump nat_POST_policy_docker-forwarding
+		iifname "br-eca39204850b" oifname "br-d1dce6da805d" jump nat_POST_docker
+		iifname "br-eca39204850b" oifname "br-d1dce6da805d" return
+		iifname "docker0" oifname "br-d1dce6da805d" jump nat_POST_policy_docker-forwarding
+		iifname "docker0" oifname "br-d1dce6da805d" jump nat_POST_docker
+		iifname "docker0" oifname "br-d1dce6da805d" return
+		iifname "enp8s0" oifname "br-d1dce6da805d" jump nat_POST_policy_docker-forwarding
+		iifname "enp8s0" oifname "br-d1dce6da805d" jump nat_POST_docker
+		iifname "enp8s0" oifname "br-d1dce6da805d" return
+		iifname "br-*" oifname "br-d1dce6da805d" jump nat_POST_policy_docker-forwarding
+		iifname "br-*" oifname "br-d1dce6da805d" jump nat_POST_docker
+		iifname "br-*" oifname "br-d1dce6da805d" return
+		oifname "br-d1dce6da805d" jump nat_POST_policy_docker-forwarding
+		oifname "br-d1dce6da805d" jump nat_POST_docker
+		oifname "br-d1dce6da805d" return
+		iifname "br-c42e98442934" oifname "br-eca39204850b" jump nat_POST_policy_docker-forwarding
+		iifname "br-c42e98442934" oifname "br-eca39204850b" jump nat_POST_docker
+		iifname "br-c42e98442934" oifname "br-eca39204850b" return
+		iifname "br-d1dce6da805d" oifname "br-eca39204850b" jump nat_POST_policy_docker-forwarding
+		iifname "br-d1dce6da805d" oifname "br-eca39204850b" jump nat_POST_docker
+		iifname "br-d1dce6da805d" oifname "br-eca39204850b" return
+		iifname "br-eca39204850b" oifname "br-eca39204850b" jump nat_POST_policy_docker-forwarding
+		iifname "br-eca39204850b" oifname "br-eca39204850b" jump nat_POST_docker
+		iifname "br-eca39204850b" oifname "br-eca39204850b" return
+		iifname "docker0" oifname "br-eca39204850b" jump nat_POST_policy_docker-forwarding
+		iifname "docker0" oifname "br-eca39204850b" jump nat_POST_docker
+		iifname "docker0" oifname "br-eca39204850b" return
+		iifname "enp8s0" oifname "br-eca39204850b" jump nat_POST_policy_docker-forwarding
+		iifname "enp8s0" oifname "br-eca39204850b" jump nat_POST_docker
+		iifname "enp8s0" oifname "br-eca39204850b" return
+		iifname "br-*" oifname "br-eca39204850b" jump nat_POST_policy_docker-forwarding
+		iifname "br-*" oifname "br-eca39204850b" jump nat_POST_docker
+		iifname "br-*" oifname "br-eca39204850b" return
+		oifname "br-eca39204850b" jump nat_POST_policy_docker-forwarding
+		oifname "br-eca39204850b" jump nat_POST_docker
+		oifname "br-eca39204850b" return
+		iifname "br-c42e98442934" oifname "docker0" jump nat_POST_policy_docker-forwarding
+		iifname "br-c42e98442934" oifname "docker0" jump nat_POST_docker
+		iifname "br-c42e98442934" oifname "docker0" return
+		iifname "br-d1dce6da805d" oifname "docker0" jump nat_POST_policy_docker-forwarding
+		iifname "br-d1dce6da805d" oifname "docker0" jump nat_POST_docker
+		iifname "br-d1dce6da805d" oifname "docker0" return
+		iifname "br-eca39204850b" oifname "docker0" jump nat_POST_policy_docker-forwarding
+		iifname "br-eca39204850b" oifname "docker0" jump nat_POST_docker
+		iifname "br-eca39204850b" oifname "docker0" return
+		iifname "docker0" oifname "docker0" jump nat_POST_policy_docker-forwarding
+		iifname "docker0" oifname "docker0" jump nat_POST_docker
+		iifname "docker0" oifname "docker0" return
+		iifname "enp8s0" oifname "docker0" jump nat_POST_policy_docker-forwarding
+		iifname "enp8s0" oifname "docker0" jump nat_POST_docker
+		iifname "enp8s0" oifname "docker0" return
+		iifname "br-*" oifname "docker0" jump nat_POST_policy_docker-forwarding
+		iifname "br-*" oifname "docker0" jump nat_POST_docker
+		iifname "br-*" oifname "docker0" return
+		oifname "docker0" jump nat_POST_policy_docker-forwarding
+		oifname "docker0" jump nat_POST_docker
+		oifname "docker0" return
+		iifname "br-c42e98442934" oifname "enp8s0" jump nat_POST_public
+		iifname "br-c42e98442934" oifname "enp8s0" return
+		iifname "br-d1dce6da805d" oifname "enp8s0" jump nat_POST_public
+		iifname "br-d1dce6da805d" oifname "enp8s0" return
+		iifname "br-eca39204850b" oifname "enp8s0" jump nat_POST_public
+		iifname "br-eca39204850b" oifname "enp8s0" return
+		iifname "docker0" oifname "enp8s0" jump nat_POST_public
+		iifname "docker0" oifname "enp8s0" return
+		iifname "enp8s0" oifname "enp8s0" jump nat_POST_public
+		iifname "enp8s0" oifname "enp8s0" return
+		iifname "br-*" oifname "enp8s0" jump nat_POST_public
+		iifname "br-*" oifname "enp8s0" return
+		oifname "enp8s0" jump nat_POST_public
+		oifname "enp8s0" return
+		iifname "br-c42e98442934" oifname "br-*" jump nat_POST_trusted
+		iifname "br-c42e98442934" oifname "br-*" return
+		iifname "br-d1dce6da805d" oifname "br-*" jump nat_POST_trusted
+		iifname "br-d1dce6da805d" oifname "br-*" return
+		iifname "br-eca39204850b" oifname "br-*" jump nat_POST_trusted
+		iifname "br-eca39204850b" oifname "br-*" return
+		iifname "docker0" oifname "br-*" jump nat_POST_trusted
+		iifname "docker0" oifname "br-*" return
+		iifname "enp8s0" oifname "br-*" jump nat_POST_trusted
+		iifname "enp8s0" oifname "br-*" return
+		iifname "br-*" oifname "br-*" jump nat_POST_trusted
+		iifname "br-*" oifname "br-*" return
+		oifname "br-*" jump nat_POST_trusted
+		oifname "br-*" return
+		iifname "br-c42e98442934" jump nat_POST_public
+		iifname "br-c42e98442934" return
+		iifname "br-d1dce6da805d" jump nat_POST_public
+		iifname "br-d1dce6da805d" return
+		iifname "br-eca39204850b" jump nat_POST_public
+		iifname "br-eca39204850b" return
+		iifname "docker0" jump nat_POST_public
+		iifname "docker0" return
+		iifname "enp8s0" jump nat_POST_public
+		iifname "enp8s0" return
+		iifname "br-*" jump nat_POST_public
+		iifname "br-*" return
+		jump nat_POST_public
+		return
+	}
+
+	chain nat_OUTPUT {
+		type nat hook output priority dstnat + 10; policy accept;
+		jump nat_OUTPUT_POLICIES
+	}
+
+	chain nat_OUTPUT_POLICIES {
+		oifname "br-c42e98442934" jump nat_OUT_docker
+		oifname "br-c42e98442934" return
+		oifname "br-d1dce6da805d" jump nat_OUT_docker
+		oifname "br-d1dce6da805d" return
+		oifname "br-eca39204850b" jump nat_OUT_docker
+		oifname "br-eca39204850b" return
+		oifname "docker0" jump nat_OUT_docker
+		oifname "docker0" return
+		oifname "enp8s0" jump nat_OUT_public
+		oifname "enp8s0" return
+		oifname "br-*" jump nat_OUT_trusted
+		oifname "br-*" return
+		jump nat_OUT_public
+		return
+	}
+
+	chain filter_PREROUTING {
+		type filter hook prerouting priority filter + 10; policy accept;
+		icmpv6 type { nd-router-advert, nd-neighbor-solicit } accept
+		meta nfproto ipv6 fib saddr . mark check missing drop
+	}
+
+	chain filter_INPUT {
+		type filter hook input priority filter + 10; policy accept;
+		ct state { established, related } accept
+		ct status dnat accept
+		iifname "lo" accept
+		ct state invalid drop
+		jump filter_INPUT_POLICIES
+		reject with icmpx admin-prohibited
+	}
+
+	chain filter_FORWARD {
+		type filter hook forward priority filter + 10; policy accept;
+		ct state { established, related } accept
+		ct status dnat accept
+		iifname "lo" accept
+		ct state invalid drop
+		ip6 daddr { ::/96, ::ffff:0.0.0.0/96, 2002::/24, 2002:a00::/24, 2002:7f00::/24, 2002:a9fe::/32, 2002:ac10::/28, 2002:c0a8::/32, 2002:e000::/19 } reject with icmpv6 addr-unreachable
+		jump filter_FORWARD_POLICIES
+		reject with icmpx admin-prohibited
+	}
+
+	chain filter_OUTPUT {
+		type filter hook output priority filter + 10; policy accept;
+		ct state { established, related } accept
+		ct status dnat accept
+		oifname "lo" accept
+		ip6 daddr { ::/96, ::ffff:0.0.0.0/96, 2002::/24, 2002:a00::/24, 2002:7f00::/24, 2002:a9fe::/32, 2002:ac10::/28, 2002:c0a8::/32, 2002:e000::/19 } reject with icmpv6 addr-unreachable
+		jump filter_OUTPUT_POLICIES
+	}
+
+	chain filter_INPUT_POLICIES {
+		iifname "br-c42e98442934" jump filter_IN_policy_allow-host-ipv6
+		iifname "br-c42e98442934" jump filter_IN_docker
+		iifname "br-c42e98442934" accept
+		iifname "br-d1dce6da805d" jump filter_IN_policy_allow-host-ipv6
+		iifname "br-d1dce6da805d" jump filter_IN_docker
+		iifname "br-d1dce6da805d" accept
+		iifname "br-eca39204850b" jump filter_IN_policy_allow-host-ipv6
+		iifname "br-eca39204850b" jump filter_IN_docker
+		iifname "br-eca39204850b" accept
+		iifname "docker0" jump filter_IN_policy_allow-host-ipv6
+		iifname "docker0" jump filter_IN_docker
+		iifname "docker0" accept
+		iifname "enp8s0" jump filter_IN_policy_allow-host-ipv6
+		iifname "enp8s0" jump filter_IN_public
+		iifname "enp8s0" reject with icmpx admin-prohibited
+		iifname "br-*" jump filter_IN_policy_allow-host-ipv6
+		iifname "br-*" jump filter_IN_trusted
+		iifname "br-*" accept
+		jump filter_IN_policy_allow-host-ipv6
+		jump filter_IN_public
+		reject with icmpx admin-prohibited
+	}
+
+	chain filter_FORWARD_POLICIES {
+		iifname "br-c42e98442934" oifname "br-c42e98442934" jump filter_FWD_policy_docker-forwarding
+		iifname "br-c42e98442934" oifname "br-c42e98442934" jump filter_FWD_docker
+		iifname "br-c42e98442934" oifname "br-c42e98442934" accept
+		iifname "br-c42e98442934" oifname "br-d1dce6da805d" jump filter_FWD_policy_docker-forwarding
+		iifname "br-c42e98442934" oifname "br-d1dce6da805d" jump filter_FWD_docker
+		iifname "br-c42e98442934" oifname "br-d1dce6da805d" accept
+		iifname "br-c42e98442934" oifname "br-eca39204850b" jump filter_FWD_policy_docker-forwarding
+		iifname "br-c42e98442934" oifname "br-eca39204850b" jump filter_FWD_docker
+		iifname "br-c42e98442934" oifname "br-eca39204850b" accept
+		iifname "br-c42e98442934" oifname "docker0" jump filter_FWD_policy_docker-forwarding
+		iifname "br-c42e98442934" oifname "docker0" jump filter_FWD_docker
+		iifname "br-c42e98442934" oifname "docker0" accept
+		iifname "br-c42e98442934" oifname "enp8s0" jump filter_FWD_docker
+		iifname "br-c42e98442934" oifname "enp8s0" accept
+		iifname "br-c42e98442934" oifname "br-*" jump filter_FWD_docker
+		iifname "br-c42e98442934" oifname "br-*" accept
+		iifname "br-c42e98442934" jump filter_FWD_docker
+		iifname "br-c42e98442934" accept
+		iifname "br-d1dce6da805d" oifname "br-c42e98442934" jump filter_FWD_policy_docker-forwarding
+		iifname "br-d1dce6da805d" oifname "br-c42e98442934" jump filter_FWD_docker
+		iifname "br-d1dce6da805d" oifname "br-c42e98442934" accept
+		iifname "br-d1dce6da805d" oifname "br-d1dce6da805d" jump filter_FWD_policy_docker-forwarding
+		iifname "br-d1dce6da805d" oifname "br-d1dce6da805d" jump filter_FWD_docker
+		iifname "br-d1dce6da805d" oifname "br-d1dce6da805d" accept
+		iifname "br-d1dce6da805d" oifname "br-eca39204850b" jump filter_FWD_policy_docker-forwarding
+		iifname "br-d1dce6da805d" oifname "br-eca39204850b" jump filter_FWD_docker
+		iifname "br-d1dce6da805d" oifname "br-eca39204850b" accept
+		iifname "br-d1dce6da805d" oifname "docker0" jump filter_FWD_policy_docker-forwarding
+		iifname "br-d1dce6da805d" oifname "docker0" jump filter_FWD_docker
+		iifname "br-d1dce6da805d" oifname "docker0" accept
+		iifname "br-d1dce6da805d" oifname "enp8s0" jump filter_FWD_docker
+		iifname "br-d1dce6da805d" oifname "enp8s0" accept
+		iifname "br-d1dce6da805d" oifname "br-*" jump filter_FWD_docker
+		iifname "br-d1dce6da805d" oifname "br-*" accept
+		iifname "br-d1dce6da805d" jump filter_FWD_docker
+		iifname "br-d1dce6da805d" accept
+		iifname "br-eca39204850b" oifname "br-c42e98442934" jump filter_FWD_policy_docker-forwarding
+		iifname "br-eca39204850b" oifname "br-c42e98442934" jump filter_FWD_docker
+		iifname "br-eca39204850b" oifname "br-c42e98442934" accept
+		iifname "br-eca39204850b" oifname "br-d1dce6da805d" jump filter_FWD_policy_docker-forwarding
+		iifname "br-eca39204850b" oifname "br-d1dce6da805d" jump filter_FWD_docker
+		iifname "br-eca39204850b" oifname "br-d1dce6da805d" accept
+		iifname "br-eca39204850b" oifname "br-eca39204850b" jump filter_FWD_policy_docker-forwarding
+		iifname "br-eca39204850b" oifname "br-eca39204850b" jump filter_FWD_docker
+		iifname "br-eca39204850b" oifname "br-eca39204850b" accept
+		iifname "br-eca39204850b" oifname "docker0" jump filter_FWD_policy_docker-forwarding
+		iifname "br-eca39204850b" oifname "docker0" jump filter_FWD_docker
+		iifname "br-eca39204850b" oifname "docker0" accept
+		iifname "br-eca39204850b" oifname "enp8s0" jump filter_FWD_docker
+		iifname "br-eca39204850b" oifname "enp8s0" accept
+		iifname "br-eca39204850b" oifname "br-*" jump filter_FWD_docker
+		iifname "br-eca39204850b" oifname "br-*" accept
+		iifname "br-eca39204850b" jump filter_FWD_docker
+		iifname "br-eca39204850b" accept
+		iifname "docker0" oifname "br-c42e98442934" jump filter_FWD_policy_docker-forwarding
+		iifname "docker0" oifname "br-c42e98442934" jump filter_FWD_docker
+		iifname "docker0" oifname "br-c42e98442934" accept
+		iifname "docker0" oifname "br-d1dce6da805d" jump filter_FWD_policy_docker-forwarding
+		iifname "docker0" oifname "br-d1dce6da805d" jump filter_FWD_docker
+		iifname "docker0" oifname "br-d1dce6da805d" accept
+		iifname "docker0" oifname "br-eca39204850b" jump filter_FWD_policy_docker-forwarding
+		iifname "docker0" oifname "br-eca39204850b" jump filter_FWD_docker
+		iifname "docker0" oifname "br-eca39204850b" accept
+		iifname "docker0" oifname "docker0" jump filter_FWD_policy_docker-forwarding
+		iifname "docker0" oifname "docker0" jump filter_FWD_docker
+		iifname "docker0" oifname "docker0" accept
+		iifname "docker0" oifname "enp8s0" jump filter_FWD_docker
+		iifname "docker0" oifname "enp8s0" accept
+		iifname "docker0" oifname "br-*" jump filter_FWD_docker
+		iifname "docker0" oifname "br-*" accept
+		iifname "docker0" jump filter_FWD_docker
+		iifname "docker0" accept
+		iifname "enp8s0" oifname "br-c42e98442934" jump filter_FWD_policy_docker-forwarding
+		iifname "enp8s0" oifname "br-c42e98442934" jump filter_FWD_public
+		iifname "enp8s0" oifname "br-c42e98442934" reject with icmpx admin-prohibited
+		iifname "enp8s0" oifname "br-d1dce6da805d" jump filter_FWD_policy_docker-forwarding
+		iifname "enp8s0" oifname "br-d1dce6da805d" jump filter_FWD_public
+		iifname "enp8s0" oifname "br-d1dce6da805d" reject with icmpx admin-prohibited
+		iifname "enp8s0" oifname "br-eca39204850b" jump filter_FWD_policy_docker-forwarding
+		iifname "enp8s0" oifname "br-eca39204850b" jump filter_FWD_public
+		iifname "enp8s0" oifname "br-eca39204850b" reject with icmpx admin-prohibited
+		iifname "enp8s0" oifname "docker0" jump filter_FWD_policy_docker-forwarding
+		iifname "enp8s0" oifname "docker0" jump filter_FWD_public
+		iifname "enp8s0" oifname "docker0" reject with icmpx admin-prohibited
+		iifname "enp8s0" oifname "enp8s0" jump filter_FWD_public
+		iifname "enp8s0" oifname "enp8s0" reject with icmpx admin-prohibited
+		iifname "enp8s0" oifname "br-*" jump filter_FWD_public
+		iifname "enp8s0" oifname "br-*" reject with icmpx admin-prohibited
+		iifname "enp8s0" jump filter_FWD_public
+		iifname "enp8s0" reject with icmpx admin-prohibited
+		iifname "br-*" oifname "br-c42e98442934" jump filter_FWD_policy_docker-forwarding
+		iifname "br-*" oifname "br-c42e98442934" jump filter_FWD_trusted
+		iifname "br-*" oifname "br-c42e98442934" accept
+		iifname "br-*" oifname "br-d1dce6da805d" jump filter_FWD_policy_docker-forwarding
+		iifname "br-*" oifname "br-d1dce6da805d" jump filter_FWD_trusted
+		iifname "br-*" oifname "br-d1dce6da805d" accept
+		iifname "br-*" oifname "br-eca39204850b" jump filter_FWD_policy_docker-forwarding
+		iifname "br-*" oifname "br-eca39204850b" jump filter_FWD_trusted
+		iifname "br-*" oifname "br-eca39204850b" accept
+		iifname "br-*" oifname "docker0" jump filter_FWD_policy_docker-forwarding
+		iifname "br-*" oifname "docker0" jump filter_FWD_trusted
+		iifname "br-*" oifname "docker0" accept
+		iifname "br-*" oifname "enp8s0" jump filter_FWD_trusted
+		iifname "br-*" oifname "enp8s0" accept
+		iifname "br-*" oifname "br-*" jump filter_FWD_trusted
+		iifname "br-*" oifname "br-*" accept
+		iifname "br-*" jump filter_FWD_trusted
+		iifname "br-*" accept
+		oifname "br-c42e98442934" jump filter_FWD_policy_docker-forwarding
+		oifname "br-c42e98442934" jump filter_FWD_public
+		oifname "br-c42e98442934" reject with icmpx admin-prohibited
+		oifname "br-d1dce6da805d" jump filter_FWD_policy_docker-forwarding
+		oifname "br-d1dce6da805d" jump filter_FWD_public
+		oifname "br-d1dce6da805d" reject with icmpx admin-prohibited
+		oifname "br-eca39204850b" jump filter_FWD_policy_docker-forwarding
+		oifname "br-eca39204850b" jump filter_FWD_public
+		oifname "br-eca39204850b" reject with icmpx admin-prohibited
+		oifname "docker0" jump filter_FWD_policy_docker-forwarding
+		oifname "docker0" jump filter_FWD_public
+		oifname "docker0" reject with icmpx admin-prohibited
+		oifname "enp8s0" jump filter_FWD_public
+		oifname "enp8s0" reject with icmpx admin-prohibited
+		oifname "br-*" jump filter_FWD_public
+		oifname "br-*" reject with icmpx admin-prohibited
+		jump filter_FWD_public
+		reject with icmpx admin-prohibited
+	}
+
+	chain filter_OUTPUT_POLICIES {
+		oifname "br-c42e98442934" jump filter_OUT_docker
+		oifname "br-c42e98442934" return
+		oifname "br-d1dce6da805d" jump filter_OUT_docker
+		oifname "br-d1dce6da805d" return
+		oifname "br-eca39204850b" jump filter_OUT_docker
+		oifname "br-eca39204850b" return
+		oifname "docker0" jump filter_OUT_docker
+		oifname "docker0" return
+		oifname "enp8s0" jump filter_OUT_public
+		oifname "enp8s0" return
+		oifname "br-*" jump filter_OUT_trusted
+		oifname "br-*" return
+		jump filter_OUT_public
+		return
+	}
+
+	chain filter_IN_public {
+		jump filter_IN_public_pre
+		jump filter_IN_public_log
+		jump filter_IN_public_deny
+		jump filter_IN_public_allow
+		jump filter_IN_public_post
+		meta l4proto { icmp, ipv6-icmp } accept
+	}
+
+	chain filter_IN_public_pre {
+	}
+
+	chain filter_IN_public_log {
+	}
+
+	chain filter_IN_public_deny {
+	}
+
+	chain filter_IN_public_allow {
+		tcp dport 22 accept
+		ip daddr 224.0.0.251 udp dport 5353 accept
+		ip6 daddr ff02::fb udp dport 5353 accept
+		ip6 daddr fe80::/64 udp dport 546 accept
+	}
+
+	chain filter_IN_public_post {
+	}
+
+	chain filter_OUT_public {
+		jump filter_OUT_public_pre
+		jump filter_OUT_public_log
+		jump filter_OUT_public_deny
+		jump filter_OUT_public_allow
+		jump filter_OUT_public_post
+	}
+
+	chain filter_OUT_public_pre {
+	}
+
+	chain filter_OUT_public_log {
+	}
+
+	chain filter_OUT_public_deny {
+	}
+
+	chain filter_OUT_public_allow {
+	}
+
+	chain filter_OUT_public_post {
+	}
+
+	chain nat_OUT_public {
+		jump nat_OUT_public_pre
+		jump nat_OUT_public_log
+		jump nat_OUT_public_deny
+		jump nat_OUT_public_allow
+		jump nat_OUT_public_post
+	}
+
+	chain nat_OUT_public_pre {
+	}
+
+	chain nat_OUT_public_log {
+	}
+
+	chain nat_OUT_public_deny {
+	}
+
+	chain nat_OUT_public_allow {
+	}
+
+	chain nat_OUT_public_post {
+	}
+
+	chain nat_POST_public {
+		jump nat_POST_public_pre
+		jump nat_POST_public_log
+		jump nat_POST_public_deny
+		jump nat_POST_public_allow
+		jump nat_POST_public_post
+	}
+
+	chain nat_POST_public_pre {
+	}
+
+	chain nat_POST_public_log {
+	}
+
+	chain nat_POST_public_deny {
+	}
+
+	chain nat_POST_public_allow {
+	}
+
+	chain nat_POST_public_post {
+	}
+
+	chain filter_FWD_public {
+		jump filter_FWD_public_pre
+		jump filter_FWD_public_log
+		jump filter_FWD_public_deny
+		jump filter_FWD_public_allow
+		jump filter_FWD_public_post
+	}
+
+	chain filter_FWD_public_pre {
+	}
+
+	chain filter_FWD_public_log {
+	}
+
+	chain filter_FWD_public_deny {
+	}
+
+	chain filter_FWD_public_allow {
+		oifname "enp8s0" accept
+	}
+
+	chain filter_FWD_public_post {
+	}
+
+	chain nat_PRE_public {
+		jump nat_PRE_public_pre
+		jump nat_PRE_public_log
+		jump nat_PRE_public_deny
+		jump nat_PRE_public_allow
+		jump nat_PRE_public_post
+	}
+
+	chain nat_PRE_public_pre {
+	}
+
+	chain nat_PRE_public_log {
+	}
+
+	chain nat_PRE_public_deny {
+	}
+
+	chain nat_PRE_public_allow {
+	}
+
+	chain nat_PRE_public_post {
+	}
+
+	chain mangle_PRE_public {
+		jump mangle_PRE_public_pre
+		jump mangle_PRE_public_log
+		jump mangle_PRE_public_deny
+		jump mangle_PRE_public_allow
+		jump mangle_PRE_public_post
+	}
+
+	chain mangle_PRE_public_pre {
+	}
+
+	chain mangle_PRE_public_log {
+	}
+
+	chain mangle_PRE_public_deny {
+	}
+
+	chain mangle_PRE_public_allow {
+	}
+
+	chain mangle_PRE_public_post {
+	}
+
+	chain filter_IN_docker {
+		jump filter_IN_docker_pre
+		jump filter_IN_docker_log
+		jump filter_IN_docker_deny
+		jump filter_IN_docker_allow
+		jump filter_IN_docker_post
+	}
+
+	chain filter_IN_docker_pre {
+	}
+
+	chain filter_IN_docker_log {
+	}
+
+	chain filter_IN_docker_deny {
+	}
+
+	chain filter_IN_docker_allow {
+	}
+
+	chain filter_IN_docker_post {
+	}
+
+	chain filter_OUT_docker {
+		jump filter_OUT_docker_pre
+		jump filter_OUT_docker_log
+		jump filter_OUT_docker_deny
+		jump filter_OUT_docker_allow
+		jump filter_OUT_docker_post
+	}
+
+	chain filter_OUT_docker_pre {
+	}
+
+	chain filter_OUT_docker_log {
+	}
+
+	chain filter_OUT_docker_deny {
+	}
+
+	chain filter_OUT_docker_allow {
+	}
+
+	chain filter_OUT_docker_post {
+	}
+
+	chain nat_OUT_docker {
+		jump nat_OUT_docker_pre
+		jump nat_OUT_docker_log
+		jump nat_OUT_docker_deny
+		jump nat_OUT_docker_allow
+		jump nat_OUT_docker_post
+	}
+
+	chain nat_OUT_docker_pre {
+	}
+
+	chain nat_OUT_docker_log {
+	}
+
+	chain nat_OUT_docker_deny {
+	}
+
+	chain nat_OUT_docker_allow {
+	}
+
+	chain nat_OUT_docker_post {
+	}
+
+	chain nat_POST_docker {
+		jump nat_POST_docker_pre
+		jump nat_POST_docker_log
+		jump nat_POST_docker_deny
+		jump nat_POST_docker_allow
+		jump nat_POST_docker_post
+	}
+
+	chain nat_POST_docker_pre {
+	}
+
+	chain nat_POST_docker_log {
+	}
+
+	chain nat_POST_docker_deny {
+	}
+
+	chain nat_POST_docker_allow {
+	}
+
+	chain nat_POST_docker_post {
+	}
+
+	chain filter_FWD_docker {
+		jump filter_FWD_docker_pre
+		jump filter_FWD_docker_log
+		jump filter_FWD_docker_deny
+		jump filter_FWD_docker_allow
+		jump filter_FWD_docker_post
+	}
+
+	chain filter_FWD_docker_pre {
+	}
+
+	chain filter_FWD_docker_log {
+	}
+
+	chain filter_FWD_docker_deny {
+	}
+
+	chain filter_FWD_docker_allow {
+		oifname "br-c42e98442934" accept
+		oifname "br-d1dce6da805d" accept
+		oifname "br-eca39204850b" accept
+		oifname "docker0" accept
+	}
+
+	chain filter_FWD_docker_post {
+	}
+
+	chain nat_PRE_docker {
+		jump nat_PRE_docker_pre
+		jump nat_PRE_docker_log
+		jump nat_PRE_docker_deny
+		jump nat_PRE_docker_allow
+		jump nat_PRE_docker_post
+	}
+
+	chain nat_PRE_docker_pre {
+	}
+
+	chain nat_PRE_docker_log {
+	}
+
+	chain nat_PRE_docker_deny {
+	}
+
+	chain nat_PRE_docker_allow {
+	}
+
+	chain nat_PRE_docker_post {
+	}
+
+	chain mangle_PRE_docker {
+		jump mangle_PRE_docker_pre
+		jump mangle_PRE_docker_log
+		jump mangle_PRE_docker_deny
+		jump mangle_PRE_docker_allow
+		jump mangle_PRE_docker_post
+	}
+
+	chain mangle_PRE_docker_pre {
+	}
+
+	chain mangle_PRE_docker_log {
+	}
+
+	chain mangle_PRE_docker_deny {
+	}
+
+	chain mangle_PRE_docker_allow {
+	}
+
+	chain mangle_PRE_docker_post {
+	}
+
+	chain filter_IN_trusted {
+		jump filter_IN_trusted_pre
+		jump filter_IN_trusted_log
+		jump filter_IN_trusted_deny
+		jump filter_IN_trusted_allow
+		jump filter_IN_trusted_post
+	}
+
+	chain filter_IN_trusted_pre {
+	}
+
+	chain filter_IN_trusted_log {
+	}
+
+	chain filter_IN_trusted_deny {
+	}
+
+	chain filter_IN_trusted_allow {
+	}
+
+	chain filter_IN_trusted_post {
+	}
+
+	chain filter_OUT_trusted {
+		jump filter_OUT_trusted_pre
+		jump filter_OUT_trusted_log
+		jump filter_OUT_trusted_deny
+		jump filter_OUT_trusted_allow
+		jump filter_OUT_trusted_post
+	}
+
+	chain filter_OUT_trusted_pre {
+	}
+
+	chain filter_OUT_trusted_log {
+	}
+
+	chain filter_OUT_trusted_deny {
+	}
+
+	chain filter_OUT_trusted_allow {
+	}
+
+	chain filter_OUT_trusted_post {
+	}
+
+	chain nat_OUT_trusted {
+		jump nat_OUT_trusted_pre
+		jump nat_OUT_trusted_log
+		jump nat_OUT_trusted_deny
+		jump nat_OUT_trusted_allow
+		jump nat_OUT_trusted_post
+	}
+
+	chain nat_OUT_trusted_pre {
+	}
+
+	chain nat_OUT_trusted_log {
+	}
+
+	chain nat_OUT_trusted_deny {
+	}
+
+	chain nat_OUT_trusted_allow {
+	}
+
+	chain nat_OUT_trusted_post {
+	}
+
+	chain nat_POST_trusted {
+		jump nat_POST_trusted_pre
+		jump nat_POST_trusted_log
+		jump nat_POST_trusted_deny
+		jump nat_POST_trusted_allow
+		jump nat_POST_trusted_post
+	}
+
+	chain nat_POST_trusted_pre {
+	}
+
+	chain nat_POST_trusted_log {
+	}
+
+	chain nat_POST_trusted_deny {
+	}
+
+	chain nat_POST_trusted_allow {
+	}
+
+	chain nat_POST_trusted_post {
+	}
+
+	chain filter_FWD_trusted {
+		jump filter_FWD_trusted_pre
+		jump filter_FWD_trusted_log
+		jump filter_FWD_trusted_deny
+		jump filter_FWD_trusted_allow
+		jump filter_FWD_trusted_post
+	}
+
+	chain filter_FWD_trusted_pre {
+	}
+
+	chain filter_FWD_trusted_log {
+	}
+
+	chain filter_FWD_trusted_deny {
+	}
+
+	chain filter_FWD_trusted_allow {
+		oifname "br-*" accept
+	}
+
+	chain filter_FWD_trusted_post {
+	}
+
+	chain nat_PRE_trusted {
+		jump nat_PRE_trusted_pre
+		jump nat_PRE_trusted_log
+		jump nat_PRE_trusted_deny
+		jump nat_PRE_trusted_allow
+		jump nat_PRE_trusted_post
+	}
+
+	chain nat_PRE_trusted_pre {
+	}
+
+	chain nat_PRE_trusted_log {
+	}
+
+	chain nat_PRE_trusted_deny {
+	}
+
+	chain nat_PRE_trusted_allow {
+	}
+
+	chain nat_PRE_trusted_post {
+	}
+
+	chain mangle_PRE_trusted {
+		jump mangle_PRE_trusted_pre
+		jump mangle_PRE_trusted_log
+		jump mangle_PRE_trusted_deny
+		jump mangle_PRE_trusted_allow
+		jump mangle_PRE_trusted_post
+	}
+
+	chain mangle_PRE_trusted_pre {
+	}
+
+	chain mangle_PRE_trusted_log {
+	}
+
+	chain mangle_PRE_trusted_deny {
+	}
+
+	chain mangle_PRE_trusted_allow {
+	}
+
+	chain mangle_PRE_trusted_post {
+	}
+
+	chain filter_IN_policy_allow-host-ipv6 {
+		jump filter_IN_policy_allow-host-ipv6_pre
+		jump filter_IN_policy_allow-host-ipv6_log
+		jump filter_IN_policy_allow-host-ipv6_deny
+		jump filter_IN_policy_allow-host-ipv6_allow
+		jump filter_IN_policy_allow-host-ipv6_post
+	}
+
+	chain filter_IN_policy_allow-host-ipv6_pre {
+	}
+
+	chain filter_IN_policy_allow-host-ipv6_log {
+	}
+
+	chain filter_IN_policy_allow-host-ipv6_deny {
+	}
+
+	chain filter_IN_policy_allow-host-ipv6_allow {
+		icmpv6 type mld-listener-done accept
+		icmpv6 type mld-listener-query accept
+		icmpv6 type mld-listener-report accept
+		icmpv6 type mld2-listener-report accept
+		icmpv6 type nd-neighbor-advert icmpv6 code 0 accept
+		icmpv6 type nd-neighbor-solicit icmpv6 code 0 accept
+		icmpv6 type nd-redirect icmpv6 code 0 accept
+		icmpv6 type nd-router-advert icmpv6 code 0 accept
+	}
+
+	chain filter_IN_policy_allow-host-ipv6_post {
+	}
+
+	chain nat_PRE_policy_allow-host-ipv6 {
+		jump nat_PRE_policy_allow-host-ipv6_pre
+		jump nat_PRE_policy_allow-host-ipv6_log
+		jump nat_PRE_policy_allow-host-ipv6_deny
+		jump nat_PRE_policy_allow-host-ipv6_allow
+		jump nat_PRE_policy_allow-host-ipv6_post
+	}
+
+	chain nat_PRE_policy_allow-host-ipv6_pre {
+	}
+
+	chain nat_PRE_policy_allow-host-ipv6_log {
+	}
+
+	chain nat_PRE_policy_allow-host-ipv6_deny {
+	}
+
+	chain nat_PRE_policy_allow-host-ipv6_allow {
+	}
+
+	chain nat_PRE_policy_allow-host-ipv6_post {
+	}
+
+	chain mangle_PRE_policy_allow-host-ipv6 {
+		jump mangle_PRE_policy_allow-host-ipv6_pre
+		jump mangle_PRE_policy_allow-host-ipv6_log
+		jump mangle_PRE_policy_allow-host-ipv6_deny
+		jump mangle_PRE_policy_allow-host-ipv6_allow
+		jump mangle_PRE_policy_allow-host-ipv6_post
+	}
+
+	chain mangle_PRE_policy_allow-host-ipv6_pre {
+	}
+
+	chain mangle_PRE_policy_allow-host-ipv6_log {
+	}
+
+	chain mangle_PRE_policy_allow-host-ipv6_deny {
+	}
+
+	chain mangle_PRE_policy_allow-host-ipv6_allow {
+	}
+
+	chain mangle_PRE_policy_allow-host-ipv6_post {
+	}
+
+	chain filter_FWD_policy_docker-forwarding {
+		jump filter_FWD_policy_docker-forwarding_pre
+		jump filter_FWD_policy_docker-forwarding_log
+		jump filter_FWD_policy_docker-forwarding_deny
+		jump filter_FWD_policy_docker-forwarding_allow
+		jump filter_FWD_policy_docker-forwarding_post
+		accept
+	}
+
+	chain filter_FWD_policy_docker-forwarding_pre {
+	}
+
+	chain filter_FWD_policy_docker-forwarding_log {
+	}
+
+	chain filter_FWD_policy_docker-forwarding_deny {
+	}
+
+	chain filter_FWD_policy_docker-forwarding_allow {
+	}
+
+	chain filter_FWD_policy_docker-forwarding_post {
+	}
+
+	chain nat_POST_policy_docker-forwarding {
+		jump nat_POST_policy_docker-forwarding_pre
+		jump nat_POST_policy_docker-forwarding_log
+		jump nat_POST_policy_docker-forwarding_deny
+		jump nat_POST_policy_docker-forwarding_allow
+		jump nat_POST_policy_docker-forwarding_post
+	}
+
+	chain nat_POST_policy_docker-forwarding_pre {
+	}
+
+	chain nat_POST_policy_docker-forwarding_log {
+	}
+
+	chain nat_POST_policy_docker-forwarding_deny {
+	}
+
+	chain nat_POST_policy_docker-forwarding_allow {
+	}
+
+	chain nat_POST_policy_docker-forwarding_post {
+	}
+}
+table ip filter {
+	chain DOCKER {
+		ip daddr 172.23.0.2 iifname != "br-c42e98442934" oifname "br-c42e98442934" tcp dport 8008 counter packets 0 bytes 0 accept
+		ip daddr 172.24.0.2 iifname != "br-eca39204850b" oifname "br-eca39204850b" tcp dport 8096 counter packets 4 bytes 240 accept
+		ip daddr 172.18.0.5 iifname != "br-d1dce6da805d" oifname "br-d1dce6da805d" tcp dport 3001 counter packets 0 bytes 0 accept
+		ip daddr 172.18.0.4 iifname != "br-d1dce6da805d" oifname "br-d1dce6da805d" tcp dport 443 counter packets 0 bytes 0 accept
+		ip daddr 172.18.0.4 iifname != "br-d1dce6da805d" oifname "br-d1dce6da805d" tcp dport 80 counter packets 0 bytes 0 accept
+		ip daddr 172.18.0.3 iifname != "br-d1dce6da805d" oifname "br-d1dce6da805d" tcp dport 80 counter packets 0 bytes 0 accept
+		iifname != "br-c42e98442934" oifname "br-c42e98442934" counter packets 0 bytes 0 drop
+		iifname != "br-d1dce6da805d" oifname "br-d1dce6da805d" counter packets 0 bytes 0 drop
+		iifname != "br-eca39204850b" oifname "br-eca39204850b" counter packets 0 bytes 0 drop
+		iifname != "docker0" oifname "docker0" counter packets 0 bytes 0 drop
+	}
+
+	chain DOCKER-FORWARD {
+		counter packets 410311 bytes 1162281179 jump DOCKER-CT
+		counter packets 138128 bytes 313251795 jump DOCKER-INTERNAL
+		counter packets 138128 bytes 313251795 jump DOCKER-BRIDGE
+		iifname "br-c42e98442934" counter packets 0 bytes 0 accept
+		iifname "br-d1dce6da805d" counter packets 138055 bytes 313244251 accept
+		iifname "br-eca39204850b" counter packets 69 bytes 7304 accept
+		iifname "docker0" counter packets 0 bytes 0 accept
+	}
+
+	chain DOCKER-BRIDGE {
+		oifname "br-c42e98442934" counter packets 0 bytes 0 jump DOCKER
+		oifname "br-d1dce6da805d" counter packets 0 bytes 0 jump DOCKER
+		oifname "br-eca39204850b" counter packets 4 bytes 240 jump DOCKER
+		oifname "docker0" counter packets 0 bytes 0 jump DOCKER
+	}
+
+	chain DOCKER-CT {
+		oifname "br-c42e98442934" ct state related,established counter packets 0 bytes 0 accept
+		oifname "br-d1dce6da805d" ct state related,established counter packets 238940 bytes 844207665 accept
+		oifname "br-eca39204850b" ct state related,established counter packets 33243 bytes 4821719 accept
+		oifname "docker0" ct state related,established counter packets 0 bytes 0 accept
+	}
+
+	chain DOCKER-INTERNAL {
+	}
+
+	chain FORWARD {
+		type filter hook forward priority filter; policy accept;
+		counter packets 410311 bytes 1162281179 jump DOCKER-USER
+		counter packets 410311 bytes 1162281179 jump DOCKER-FORWARD
+	}
+
+	chain DOCKER-USER {
+	}
+}
+table ip nat {
+	chain DOCKER {
+		iifname != "br-d1dce6da805d" tcp dport 8090 counter packets 0 bytes 0 dnat to 172.18.0.3:80
+		iifname != "br-d1dce6da805d" tcp dport 80 counter packets 0 bytes 0 dnat to 172.18.0.4:80
+		iifname != "br-d1dce6da805d" tcp dport 443 counter packets 0 bytes 0 dnat to 172.18.0.4:443
+		iifname != "br-d1dce6da805d" tcp dport 89 counter packets 0 bytes 0 dnat to 172.18.0.5:3001
+		iifname != "br-eca39204850b" tcp dport 8096 counter packets 4 bytes 240 dnat to 172.24.0.2:8096
+		iifname != "br-c42e98442934" tcp dport 8008 counter packets 0 bytes 0 dnat to 172.23.0.2:8008
+	}
+
+	chain PREROUTING {
+		type nat hook prerouting priority dstnat; policy accept;
+		fib daddr type local counter packets 20100 bytes 1364855 jump DOCKER
+	}
+
+	chain OUTPUT {
+		type nat hook output priority dstnat; policy accept;
+		ip daddr != 127.0.0.0/8 fib daddr type local counter packets 0 bytes 0 jump DOCKER
+	}
+
+	chain POSTROUTING {
+		type nat hook postrouting priority srcnat; policy accept;
+		ip saddr 172.17.0.0/16 oifname != "docker0" counter packets 0 bytes 0 masquerade
+		ip saddr 172.24.0.0/16 oifname != "br-eca39204850b" counter packets 138 bytes 15804 masquerade
+		ip saddr 172.18.0.0/16 oifname != "br-d1dce6da805d" counter packets 411 bytes 32260 masquerade
+		ip saddr 172.23.0.0/16 oifname != "br-c42e98442934" counter packets 142 bytes 18675 masquerade
+	}
+}
+table ip6 filter {
+	chain DOCKER {
+	}
+
+	chain DOCKER-FORWARD {
+		counter packets 0 bytes 0 jump DOCKER-CT
+		counter packets 0 bytes 0 jump DOCKER-INTERNAL
+		counter packets 0 bytes 0 jump DOCKER-BRIDGE
+	}
+
+	chain DOCKER-BRIDGE {
+	}
+
+	chain DOCKER-CT {
+	}
+
+	chain DOCKER-INTERNAL {
+	}
+
+	chain FORWARD {
+		type filter hook forward priority filter; policy accept;
+		counter packets 0 bytes 0 jump DOCKER-USER
+		counter packets 0 bytes 0 jump DOCKER-FORWARD
+	}
+
+	chain DOCKER-USER {
+	}
+}
+table ip6 nat {
+	chain DOCKER {
+	}
+
+	chain PREROUTING {
+		type nat hook prerouting priority dstnat; policy accept;
+		fib daddr type local counter packets 6 bytes 738 jump DOCKER
+	}
+
+	chain OUTPUT {
+		type nat hook output priority dstnat; policy accept;
+		ip6 daddr != ::1 fib daddr type local counter packets 0 bytes 0 jump DOCKER
+	}
+}
+table ip raw {
+	chain PREROUTING {
+		type filter hook prerouting priority raw; policy accept;
+		ip daddr 172.18.0.2 iifname != "br-d1dce6da805d" counter packets 0 bytes 0 drop
+		ip daddr 172.18.0.3 iifname != "br-d1dce6da805d" counter packets 0 bytes 0 drop
+		ip daddr 172.18.0.4 iifname != "br-d1dce6da805d" counter packets 0 bytes 0 drop
+		ip daddr 172.18.0.5 iifname != "br-d1dce6da805d" counter packets 0 bytes 0 drop
+		ip daddr 172.24.0.2 iifname != "br-eca39204850b" counter packets 0 bytes 0 drop
+		ip daddr 172.18.0.6 iifname != "br-d1dce6da805d" counter packets 0 bytes 0 drop
+		ip daddr 172.18.0.7 iifname != "br-d1dce6da805d" counter packets 0 bytes 0 drop
+		ip daddr 172.18.0.8 iifname != "br-d1dce6da805d" counter packets 0 bytes 0 drop
+		ip daddr 172.23.0.2 iifname != "br-c42e98442934" counter packets 0 bytes 0 drop
+	}
+}

@@ -1,25 +1,24 @@
-def modulo4(numeros):
-    grupos = {0: [], 1: [], 2: [], 3: []}
+import matplotlib.pyplot as plt
 
-    for n in numeros:
-        resto = n % 4
-        grupos[resto].append(n)
+# Valores de x
+x = [100, 140, 160, 200]
 
-    print("= Grupos por resto (mod 4) =")
-    for resto, nums in grupos.items():
-        print(f"  Resto {resto}: {nums}")
+# Valores acumulados F(x)
+F = [0.21, 0.45, 0.52, 1.00]
 
-    print()
-    print(f"Elemento neutro da adição módulo 4: 0")
-    print()
+# Criando gráfico em escada
+plt.step(x, F, where='post')
 
-    inversos = {0: 0, 1: 3, 2: 2, 3: 1}
+# Título e nomes dos eixos
+plt.title('Função de Distribuição Acumulada')
+plt.xlabel('x (ms)')
+plt.ylabel('F(x)')
 
-    for n in numeros:
-        r = n % 4
-        inv = inversos[r]
-        print(f"Número: {n} (mod 4 = {r}) | Inverso aditivo mod 4: {inv}")
+# Limites dos eixos
+plt.ylim(0, 1.1)
 
+# Grade
+plt.grid(True)
 
-numeros = [0, 1, 2, 3, 4, 5, 6, 7]
-modulo4(numeros)
+# Mostrar gráfico
+plt.show()

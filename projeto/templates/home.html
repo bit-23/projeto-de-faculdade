@@ -1,46 +1,293 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <title>Home</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/Style.css') }}">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ServiConnect</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/Style.css') }}">
+
 </head>
 <body>
 
+<!-- HEADER -->
 <header>
-    <div class="logo">Connecting Service</div>
+
+    <div class="logo">
+        ServiConnect
+    </div>
+
     <nav>
-        <a href="#">Categorias</a>
-        <a href="#">Perfil</a>
-        <a href="#" class="btn">Sair</a>
+
+        <a href="{{ url_for('main.pagina_home') }}">
+            Início
+        </a>
+
+        <a href="{{ url_for('main.categoria') }}">
+            Categorias
+        </a>
+
+        <a href="{{ url_for('main.ComoFunciona') }}">
+            Como Funciona
+        </a>
+
+        <a href="{{ url_for('main.perfil') }}">
+            Perfil
+        </a>
+
+        <a href="{{ url_for('main.logout') }}" class="btn">
+            Sair
+        </a>
+
     </nav>
+
 </header>
 
+<!-- HERO -->
 <section class="hero">
-    <div>
-        <h1>Bem-vindo de volta 👋</h1>
-        <p>Encontre os melhores profissionais perto de você.</p>
-        
+
+    <div class="hero-text">
+
+        {% if usuario %}
+            <h1>
+                Bem-vindo {{ usuario.nome }} 👋
+            </h1>
+        {% else %}
+            <h1>
+                Bem-vindo ao ServiConnect 👋
+            </h1>
+        {% endif %}
+
+        <p>
+            Encontre profissionais confiáveis perto de você
+            ou ofereça seus próprios serviços de forma simples e rápida.
+        </p>
+
         <div class="buttons">
-            <a href="#" class="btn-primary">Buscar Serviço</a>
-            <a href="#" class="btn-secondary">Oferecer Serviço</a>
+
+            <a href="{{ url_for('main.buscar_servicos') }}" class="btn-primary">
+                Buscar Serviço
+            </a>
+
+            <a href="{{ url_for('main.procura_servicos') }}" class="btn-secondary">
+                Oferecer Serviço
+            </a>
+
         </div>
+
     </div>
+
 </section>
 
+<!-- COMO FUNCIONA -->
+<section class="como-funciona">
+
+    <h2>Como Funciona</h2>
+
+    <p class="section-sub">
+        Comece em poucos passos
+    </p>
+
+    <div class="passos">
+
+        <div class="passo">
+
+            <div class="passo-num">1</div>
+
+            <h3>Escolha uma categoria</h3>
+
+            <p>
+                Navegue pelas categorias disponíveis
+                e encontre o serviço ideal.
+            </p>
+
+        </div>
+
+        <div class="passo">
+
+            <div class="passo-num">2</div>
+
+            <h3>Encontre profissionais</h3>
+
+            <p>
+                Veja profissionais cadastrados
+                perto da sua localização.
+            </p>
+
+        </div>
+
+        <div class="passo">
+
+            <div class="passo-num">3</div>
+
+            <h3>Entre em contato</h3>
+
+            <p>
+                Converse diretamente com o profissional
+                e combine o serviço.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div style="margin-top:40px;">
+
+        <a href="{{ url_for('main.ComoFunciona') }}" class="btn-primary">
+            Ver Como Funciona
+        </a>
+
+    </div>
+
+</section>
+
+<!-- CATEGORIAS -->
 <section class="categorias">
+
     <h2>Categorias Populares</h2>
 
+    <p class="section-sub">
+        Serviços mais procurados
+    </p>
+
     <div class="cards">
-        <div class="card">Elétrica</div>
-        <div class="card">Hidráulica</div>
-        <div class="card">Informática</div>
-        <div class="card">Limpeza</div>
+
+        <div class="card">
+            <div class="card-icon">⚡</div>
+            <h3>Eletricista</h3>
+            <p>Instalações e manutenção elétrica.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">💻</div>
+            <h3>Programador</h3>
+            <p>Sites, sistemas e automações.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">🔧</div>
+            <h3>Encanador</h3>
+            <p>Consertos hidráulicos e manutenção.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">🧱</div>
+            <h3>Pedreiro</h3>
+            <p>Construções e reformas.</p>
+        </div>
+
     </div>
+
+    <div style="margin-top:40px;">
+
+        <a href="{{ url_for('main.categoria') }}" class="btn-primary">
+            Ver Categorias
+        </a>
+
+    </div>
+
 </section>
 
+<!-- VANTAGENS -->
+<section class="vantagens">
+
+    <h2>
+        Por que usar o ServiConnect?
+    </h2>
+
+    <div class="vantagens-grid">
+
+        <div class="vantagem">
+
+            <div class="vantagem-icon">🚀</div>
+
+            <h3>Rápido</h3>
+
+            <p>
+                Encontre profissionais em poucos minutos.
+            </p>
+
+        </div>
+
+        <div class="vantagem">
+
+            <div class="vantagem-icon">🔒</div>
+
+            <h3>Seguro</h3>
+
+            <p>
+                Plataforma segura para clientes e profissionais.
+            </p>
+
+        </div>
+
+        <div class="vantagem">
+
+            <div class="vantagem-icon">📈</div>
+
+            <h3>Mais oportunidades</h3>
+
+            <p>
+                Divulgue seu trabalho e consiga novos clientes.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- CTA -->
+<section class="cta">
+
+    <h2>
+        Comece agora no ServiConnect
+    </h2>
+
+    <p>
+        Cadastre-se e encontre profissionais ou clientes hoje mesmo.
+    </p>
+
+    <a href="{{ url_for('main.categoria') }}" class="btn-primary">
+        Explorar Categorias
+    </a>
+
+</section>
+
+<!-- FOOTER -->
 <footer>
-    © 2026 Connecting Service - Todos os direitos reservados
+
+    <div class="footer-content">
+
+        <div class="footer-col">
+
+            <div class="logo">
+                ServiConnect
+            </div>
+
+            <p>
+                Plataforma moderna para conectar profissionais e clientes.
+            </p>
+
+        </div>
+
+        <div class="footer-col">
+
+            <h4>Navegação</h4>
+
+            <a href="{{ url_for('main.pagina_home') }}">Início</a>
+            <a href="{{ url_for('main.categoria') }}">Categorias</a>
+            <a href="{{ url_for('main.ComoFunciona') }}">Como Funciona</a>
+
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        © 2026 ServiConnect - Todos os direitos reservados
+    </div>
+
 </footer>
 
 </body>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Meu Perfil</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/Style.css') }}">
+<script defer src="{{ url_for('static', filename='js/perfil.js') }}"></script>
+</head>
+<body class="perfil-body">
+
+<header class="topo">
+    <div class="logo">ServiConnect</div>
+
+    <nav>
+        <a href="{{ url_for('main.pagina_home') }}">Início</a>
+        <a href="{{ url_for('main.categoria') }}">Categorias</a>
+        <a href="{{ url_for('main.ComoFunciona') }}">Como funciona</a>
+        <a href="{{ url_for('main.logout') }}" class="btn-sair">Sair</a>
+    </nav>
+</header>
+
+<section class="perfil-container">
+
+<div class="perfil-card">
+
+    <div class="perfil-topo">
+
+ <div class="perfil-info">
+
+    <div>
+
+        <img
+            src="{{ url_for('static', filename='img/user.png') }}"
+            class="foto-user"
+            id="previewFoto"
+        >
+
+        <div class="upload-foto">
+
+            <input
+                type="file"
+                id="inputFoto"
+                accept="image/*"
+            >
+
+            <label for="inputFoto">
+                Trocar foto
+            </label>
+
+        </div>
+
+    </div>
+
+    <div>
+        <h2>{{ usuario.nome }}</h2>
+        <p>{{ usuario.email }}</p>
+    </div>
+
+</div>
+
+        <button class="btn-editar">
+            Editar Perfil
+        </button>
+
+    </div>
+
+    <div class="perfil-grid">
+
+        <div class="campo">
+            <label>Nome</label>
+            <input type="text" value="{{ usuario.nome }}" disabled>
+        </div>
+
+        <div class="campo">
+            <label>Email</label>
+            <input type="text" value="{{ usuario.email }}" disabled>
+        </div>
+
+        <div class="campo">
+            <label>CPF</label>
+            <input type="text" value="{{ usuario.cpf }}" disabled>
+        </div>
+
+        <div class="campo">
+            <label>Categoria</label>
+
+            <form method="POST" action="{{ url_for('main.salvar_categoria') }}">
+                <select name="categoria">
+                    <option>Escolha</option>
+                    <option>Eletricista</option>
+                    <option>Programador</option>
+                    <option>Pedreiro</option>
+                </select>
+
+                <button type="submit">Salvar</button>
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+</body>
+</html>
