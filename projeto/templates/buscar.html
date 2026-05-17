@@ -7,7 +7,7 @@
 <title>Propostas | ServiceConnect</title>
 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/Style.css') }}">
-<script defer src="{{ url_for('static', filename='js/codefront.js') }}"></script>
+<script defer src="{{ url_for('static', filename='js/buscar.js') }}"></script>
 </head>
 
 <body>
@@ -25,18 +25,7 @@
 
 <section class="marketplace">
 
-    <!-- TOPO -->
-    <div class="market-topo">
-        <div>
-            <h1>Propostas de Serviços</h1>
-            <p>Encontre oportunidades e publique seus projetos.</p>
-        </div>
-
-        <button class="btn-publicar" id="abrirModal">
-            + Publicar Proposta
-        </button>
-    </div>
-
+   
 
     <div class="market-grid">
 
@@ -166,37 +155,3 @@
 
 
 
-<!-- MODAL -->
-<div class="modal hidden" id="modal">
-
-    <div class="modal-box">
-
-        <span class="fechar" id="fecharModal">×</span>
-
-        <h2>Nova Proposta</h2>
-
-        <form>
-
-            <input type="text" placeholder="Título">
-
-            <select>
-                <option>Categoria</option>
-                <option>Design</option>
-                <option>Programação</option>
-                <option>Marketing</option>
-            </select>
-
-            <input type="number" placeholder="Valor">
-
-            <textarea placeholder="Descrição"></textarea>
-
-            <button type="submit">Publicar</button>
-
-        </form>
-
-    </div>
-
-</div>
-
-</body>
-</html>

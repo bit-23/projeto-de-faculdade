@@ -36,6 +36,8 @@ def home():
 @main.route("/home")
 def pagina_home():
 
+    print(session)
+
     if "user_id" not in session:
         return redirect(url_for("main.login"))
 
@@ -43,10 +45,14 @@ def pagina_home():
 
     try:
         conn = conectar()
+
         cursor = conn.cursor(dictionary=True)
 
         cursor.execute(
-            "SELECT * FROM usuarios WHERE idUsuarios = %s",
+            """
+            SELECT * FROM usuarios
+            WHERE idUsuarios = %s
+            """,
             (session["user_id"],)
         )
 
@@ -58,7 +64,10 @@ def pagina_home():
     except Exception as e:
         print(e)
 
-    return render_template("home.html", usuario=usuario)
+    return render_template(
+        "home.html",
+        usuario=usuario
+    )
 
 
 # =====================================================

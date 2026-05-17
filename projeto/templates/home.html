@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -9,6 +10,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/Style.css') }}">
 
 </head>
+
 <body>
 
 <!-- HEADER -->
@@ -47,6 +49,9 @@
 <!-- HERO -->
 <section class="hero">
 
+    
+
+    <!-- TEXTO -->
     <div class="hero-text">
 
         {% if usuario %}
@@ -66,24 +71,42 @@
 
         <div class="buttons">
 
-            <a href="{{ url_for('main.buscar_servicos') }}" class="btn-primary">
+            <a href="{{ url_for('main.buscar_servicos') }}"
+                class="btn-primary">
+
                 Buscar Serviço
+
             </a>
 
-            <a href="{{ url_for('main.procura_servicos') }}" class="btn-secondary">
+            <a href="{{ url_for('main.procura_servicos') }}"
+                class="btn-secondary">
+
                 Oferecer Serviço
+
             </a>
 
         </div>
 
     </div>
 
+        <!-- IMAGEM -->
+        <div class="hero-image">
+
+            <img
+                src="{{ url_for('static', filename='PNG/—Pngtree—cheerful construction worker in orange_19835733.png') }}"
+                alt="Profissionais trabalhando">
+
+        </div>
+
+    
 </section>
 
 <!-- COMO FUNCIONA -->
 <section class="como-funciona">
 
-    <h2>Como Funciona</h2>
+    <h2>
+        Como Funciona
+    </h2>
 
     <p class="section-sub">
         Comece em poucos passos
@@ -91,11 +114,16 @@
 
     <div class="passos">
 
+        <!-- PASSO 1 -->
         <div class="passo">
 
-            <div class="passo-num">1</div>
+            <div class="passo-num">
+                1
+            </div>
 
-            <h3>Escolha uma categoria</h3>
+            <h3>
+                Escolha uma categoria
+            </h3>
 
             <p>
                 Navegue pelas categorias disponíveis
@@ -104,11 +132,16 @@
 
         </div>
 
+        <!-- PASSO 2 -->
         <div class="passo">
 
-            <div class="passo-num">2</div>
+            <div class="passo-num">
+                2
+            </div>
 
-            <h3>Encontre profissionais</h3>
+            <h3>
+                Encontre profissionais
+            </h3>
 
             <p>
                 Veja profissionais cadastrados
@@ -117,11 +150,16 @@
 
         </div>
 
+        <!-- PASSO 3 -->
         <div class="passo">
 
-            <div class="passo-num">3</div>
+            <div class="passo-num">
+                3
+            </div>
 
-            <h3>Entre em contato</h3>
+            <h3>
+                Entre em contato
+            </h3>
 
             <p>
                 Converse diretamente com o profissional
@@ -134,8 +172,11 @@
 
     <div style="margin-top:40px;">
 
-        <a href="{{ url_for('main.ComoFunciona') }}" class="btn-primary">
+        <a href="{{ url_for('main.ComoFunciona') }}"
+           class="btn-primary">
+
             Ver Como Funciona
+
         </a>
 
     </div>
@@ -145,7 +186,9 @@
 <!-- CATEGORIAS -->
 <section class="categorias">
 
-    <h2>Categorias Populares</h2>
+    <h2>
+        Categorias Populares
+    </h2>
 
     <p class="section-sub">
         Serviços mais procurados
@@ -153,36 +196,83 @@
 
     <div class="cards">
 
+        <!-- CARD -->
         <div class="card">
-            <div class="card-icon">⚡</div>
-            <h3>Eletricista</h3>
-            <p>Instalações e manutenção elétrica.</p>
+
+            <div class="card-icon">
+                ⚡
+            </div>
+
+            <h3>
+                Eletricista
+            </h3>
+
+            <p>
+                Instalações e manutenção elétrica.
+            </p>
+
         </div>
 
+        <!-- CARD -->
         <div class="card">
-            <div class="card-icon">💻</div>
-            <h3>Programador</h3>
-            <p>Sites, sistemas e automações.</p>
+
+            <div class="card-icon">
+                💻
+            </div>
+
+            <h3>
+                Programador
+            </h3>
+
+            <p>
+                Sites, sistemas e automações.
+            </p>
+
         </div>
 
+        <!-- CARD -->
         <div class="card">
-            <div class="card-icon">🔧</div>
-            <h3>Encanador</h3>
-            <p>Consertos hidráulicos e manutenção.</p>
+
+            <div class="card-icon">
+                🔧
+            </div>
+
+            <h3>
+                Encanador
+            </h3>
+
+            <p>
+                Consertos hidráulicos e manutenção.
+            </p>
+
         </div>
 
+        <!-- CARD -->
         <div class="card">
-            <div class="card-icon">🧱</div>
-            <h3>Pedreiro</h3>
-            <p>Construções e reformas.</p>
+
+            <div class="card-icon">
+                🧱
+            </div>
+
+            <h3>
+                Pedreiro
+            </h3>
+
+            <p>
+                Construções e reformas.
+            </p>
+
         </div>
 
     </div>
 
     <div style="margin-top:40px;">
 
-        <a href="{{ url_for('main.categoria') }}" class="btn-primary">
+        <a href="{{ url_for('main.categoria') }}"
+           class="btn-primary">
+
             Ver Categorias
+
         </a>
 
     </div>
@@ -198,11 +288,16 @@
 
     <div class="vantagens-grid">
 
+        <!-- VANTAGEM -->
         <div class="vantagem">
 
-            <div class="vantagem-icon">🚀</div>
+            <div class="vantagem-icon">
+                🚀
+            </div>
 
-            <h3>Rápido</h3>
+            <h3>
+                Rápido
+            </h3>
 
             <p>
                 Encontre profissionais em poucos minutos.
@@ -210,11 +305,16 @@
 
         </div>
 
+        <!-- VANTAGEM -->
         <div class="vantagem">
 
-            <div class="vantagem-icon">🔒</div>
+            <div class="vantagem-icon">
+                🔒
+            </div>
 
-            <h3>Seguro</h3>
+            <h3>
+                Seguro
+            </h3>
 
             <p>
                 Plataforma segura para clientes e profissionais.
@@ -222,11 +322,16 @@
 
         </div>
 
+        <!-- VANTAGEM -->
         <div class="vantagem">
 
-            <div class="vantagem-icon">📈</div>
+            <div class="vantagem-icon">
+                📈
+            </div>
 
-            <h3>Mais oportunidades</h3>
+            <h3>
+                Mais oportunidades
+            </h3>
 
             <p>
                 Divulgue seu trabalho e consiga novos clientes.
@@ -246,11 +351,15 @@
     </h2>
 
     <p>
-        Cadastre-se e encontre profissionais ou clientes hoje mesmo.
+        Cadastre-se e encontre profissionais
+        ou clientes hoje mesmo.
     </p>
 
-    <a href="{{ url_for('main.categoria') }}" class="btn-primary">
+    <a href="{{ url_for('main.categoria') }}"
+       class="btn-primary">
+
         Explorar Categorias
+
     </a>
 
 </section>
@@ -260,6 +369,7 @@
 
     <div class="footer-content">
 
+        <!-- COLUNA -->
         <div class="footer-col">
 
             <div class="logo">
@@ -267,25 +377,39 @@
             </div>
 
             <p>
-                Plataforma moderna para conectar profissionais e clientes.
+                Plataforma moderna para conectar
+                profissionais e clientes.
             </p>
 
         </div>
 
+        <!-- COLUNA -->
         <div class="footer-col">
 
-            <h4>Navegação</h4>
+            <h4>
+                Navegação
+            </h4>
 
-            <a href="{{ url_for('main.pagina_home') }}">Início</a>
-            <a href="{{ url_for('main.categoria') }}">Categorias</a>
-            <a href="{{ url_for('main.ComoFunciona') }}">Como Funciona</a>
+            <a href="{{ url_for('main.pagina_home') }}">
+                Início
+            </a>
+
+            <a href="{{ url_for('main.categoria') }}">
+                Categorias
+            </a>
+
+            <a href="{{ url_for('main.ComoFunciona') }}">
+                Como Funciona
+            </a>
 
         </div>
 
     </div>
 
     <div class="footer-bottom">
+
         © 2026 ServiConnect - Todos os direitos reservados
+
     </div>
 
 </footer>

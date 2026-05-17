@@ -9,7 +9,7 @@ app.secret_key = os.urandom(24)
 
 # Configuração do Google OAuth 2.0
 app.config["GOOGLE_CLIENT_ID"] = "987145247771-7p0qifomodu85k32kut9a2h227a5jbv9.apps.googleusercontent.com"
-app.config["GOOGLE_CLIENT_SECRET"] = "SEU_CLIENT_SECRET"
+app.config["GOOGLE_CLIENT_SECRET"] = "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"
 
 # Registra o blueprint
 app.register_blueprint(main)
