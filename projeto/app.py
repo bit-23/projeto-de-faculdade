@@ -1,18 +1,17 @@
-from flask import Flask
-from views import main
-from authlib.integrations.flask_client import OAuth
-import views
 import os
+from flask import Flask
+from authlib.integrations.flask_client import OAuth
+from dotenv import load_dotenv
+
+# Carrega as variáveis do arquivo .env
+load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24)
+app.secret_key = os.getenv("SECRET_KEY", os.urandom(24))
 
 # Configuração do Google OAuth 2.0
-app.config["GOOGLE_CLIENT_ID"] = "987145247771-7p0qifomodu85k32kut9a2h227a5jbv9.apps.googleusercontent.com"
-app.config["GOOGLE_CLIENT_SECRET"] = "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"
-
-# Registra o blueprint
-app.register_blueprint(main)
+app.config["GOOGLE_CLIENT_ID"] = os.getenv("GOOGLE_CLIENT_ID")
+app.config["GOOGLE_CLIENT_SECRET"] = os.getenv("GOOGLE_CLIENT_SECRET")
 
 # Inicializa o OAuth
 oauth = OAuth(app)
@@ -24,7 +23,12 @@ oauth.register(
     client_kwargs={"scope": "openid email profile"},
 )
 
-# Disponibiliza oauth nas views
+# Importamos o blueprint DEPOIS de configurar o oauth para evitar importação circular
+from views import main
+app.register_blueprint(main)
+
+# Disponibiliza oauth nas views (para que views.py possa acessar)
+import views
 views.oauth = oauth
 
 if __name__ == "__main__":
