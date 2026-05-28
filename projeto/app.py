@@ -1,10 +1,14 @@
 import os
 from flask import Flask
+# Importamos as duas funções necessárias
+from dotenv import load_dotenv, find_dotenv 
 from authlib.integrations.flask_client import OAuth
-from dotenv import load_dotenv
 
-# Carrega as variáveis do arquivo .env
-load_dotenv()
+# CORREÇÃO AQUI: Passamos o find_dotenv() como argumento para o load_dotenv()
+load_dotenv(find_dotenv())
+
+# Teste de Debug
+print(f"DEBUG: Meu ID é: '{os.getenv('GOOGLE_CLIENT_ID')}'")
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", os.urandom(24))
@@ -27,7 +31,7 @@ oauth.register(
 from views import main
 app.register_blueprint(main)
 
-# Disponibiliza oauth nas views (para que views.py possa acessar)
+# Disponibiliza oauth nas views
 import views
 views.oauth = oauth
 
