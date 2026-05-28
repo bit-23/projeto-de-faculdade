@@ -21,3 +21,8 @@ Plataforma web para conexão entre clientes e prestadores de serviços.
 
 ## Diagrama de sequencia 
 <img width="598" height="445" alt="image" src="https://github.com/user-attachments/assets/a1a406dc-01e4-49a5-ba1e-11f8519cf4fa" />
+
+
+## Projeto
+https://github.com/user-attachments/assets/f8a422b4-829d-43dc-9a9b-41ac57d91bdd
+
