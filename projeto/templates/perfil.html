@@ -10,7 +10,6 @@
 
 <header class="topo">
     <div class="logo">ServiConnect</div>
-
     <nav>
         <a href="{{ url_for('main.pagina_home') }}">Início</a>
         <a href="{{ url_for('main.categoria') }}">Categorias</a>
@@ -20,48 +19,41 @@
 </header>
 
 <section class="perfil-container">
-
 <div class="perfil-card">
 
     <div class="perfil-topo">
+        <div class="perfil-info">
 
- <div class="perfil-info">
+            <div>
+                {% if usuario.foto %}
+                    <img
+                        src="{{ url_for('static', filename='uploads/' + usuario.foto) }}"
+                        class="foto-user"
+                        id="previewFoto">
+                {% else %}
+                    <img
+                        src="{{ url_for('static', filename='uploads/Logotipo do Connecting Service.png') }}"
+                        class="foto-user"
+                        id="previewFoto">
+                {% endif %}
 
-    <div>
+                <!-- FORM DE UPLOAD -->
+                <form method="POST" action="{{ url_for('main.atualizar_foto') }}" enctype="multipart/form-data">
+                    <input type="file" id="inputFoto" name="foto" accept="image/*">
+                    <label for="inputFoto">Trocar foto</label>
+                    <button type="submit">Salvar foto</button>
+                </form>
 
-        <img
-            src="{{ url_for('static', filename='img/user.png') }}"
-            class="foto-user"
-            id="previewFoto"
-        >
+            </div>
 
-        <div class="upload-foto">
-
-            <input
-                type="file"
-                id="inputFoto"
-                accept="image/*"
-            >
-
-            <label for="inputFoto">
-                Trocar foto
-            </label>
+            <div>
+                <h2>{{ usuario.nome }}</h2>
+                <p>{{ usuario.email }}</p>
+            </div>
 
         </div>
 
-    </div>
-
-    <div>
-        <h2>{{ usuario.nome }}</h2>
-        <p>{{ usuario.email }}</p>
-    </div>
-
-</div>
-
-        <button class="btn-editar">
-            Editar Perfil
-        </button>
-
+        <button class="btn-editar">Editar Perfil</button>
     </div>
 
     <div class="perfil-grid">
@@ -83,7 +75,6 @@
 
         <div class="campo">
             <label>Categoria</label>
-
             <form method="POST" action="{{ url_for('main.salvar_categoria') }}">
                 <select name="categoria">
                     <option>Escolha</option>
@@ -91,16 +82,13 @@
                     <option>Programador</option>
                     <option>Pedreiro</option>
                 </select>
-
                 <button type="submit">Salvar</button>
             </form>
-
         </div>
 
     </div>
 
 </div>
-
 </section>
 
 </body>

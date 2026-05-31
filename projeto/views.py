@@ -1,12 +1,22 @@
-
+import os
+from werkzeug.utils import secure_filename
 from flask import Blueprint, render_template, request, redirect, url_for, session
 import mysql.connector
+
 
 main = Blueprint("main", __name__)
 
 # oauth — injetado pelo app.py
 oauth = None
 
+#---------------------------------------------------------------------------
+# CAMINHO PRA GUARDA FOTOS DE PERFEILS
+#---------------------------------------------------------------------------
+UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), "static", "uploads")
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "webp"}
+
+def allowed_file(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # =====================================================
 # CONEXÃO MYSQL
@@ -22,9 +32,15 @@ def conectar():
 
 
 # =====================================================
-# HOME PUBLICA
+# PRE HOME PUBLICA
 # =====================================================
 @main.route("/")
+def preHome():
+    return render_template("exercicios.html")
+
+# =====================================================
+# HOME PUBLICA
+# =====================================================
 @main.route("/ServiConnect")
 def home():
     return render_template("exercicios.html")
@@ -194,7 +210,23 @@ def salvar_categoria():
 # =====================================================
 @main.route("/ComoFunciona")
 def ComoFunciona():
-    return render_template("Comofunciona.html")
+    if "user_id" not in session:
+        return redirect(url_for("main.login"))
+
+    conn = conectar()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute(
+        "SELECT * FROM usuarios WHERE idUsuarios = %s",
+        (session["user_id"],)
+    )
+
+    usuario = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+
+    return render_template("Comofunciona.html", usuario=usuario)
 
 
 # =====================================================
@@ -293,7 +325,7 @@ def perfil():
 
     cursor.execute(
         """
-        SELECT idUsuarios, nome, email, cpf
+        SELECT idUsuarios, nome, email, cpf,foto
         FROM usuarios
         WHERE idUsuarios = %s
         """,
@@ -308,13 +340,77 @@ def perfil():
     return render_template("perfil.html", usuario=usuario)
 
 
+#-----------------------------------------------------
+# ATUALIZAR/GUARDAR FOTO DO USUARIO
+#-----------------------------------------------------
+
+@main.route("/atualizar_foto", methods=["POST"])
+def atualizar_foto():
+
+    if "user_id" not in session:
+        return redirect(url_for("main.login"))
+
+    foto = request.files.get("foto")
+
+    if not foto or not allowed_file(foto.filename):
+        return redirect(url_for("main.perfil"))
+
+    filename = secure_filename(f"{session['user_id']}_{foto.filename}")
+
+    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+    foto.save(os.path.join(UPLOAD_FOLDER, filename))
+
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "UPDATE usuarios SET foto = %s WHERE idUsuarios = %s",
+        (filename, session["user_id"])
+    )
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return redirect(url_for("main.perfil"))
+
 # =====================================================
 # BUSCAR SERVIÇOS
 # =====================================================
 @main.route("/buscar")
 def buscar_servicos():
-    return render_template("buscar.html")
 
+    if "user_id" not in session:
+        return redirect(url_for("main.login"))
+
+    conn = conectar()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute(
+        "SELECT * FROM usuarios WHERE idUsuarios = %s",
+        (session["user_id"],)
+    )
+    usuario = cursor.fetchone()
+
+    cursor.execute(
+    """
+    SELECT s.*, c.nome AS categoria_nome,
+           u.nome AS cliente_nome,
+           u.foto AS cliente_foto
+    FROM servicos s
+    LEFT JOIN categorias c ON s.categoria_id = c.id
+    LEFT JOIN usuarios u ON s.cliente_id = u.idUsuarios
+    WHERE s.status = 'aberto'
+    ORDER BY s.data_criacao DESC
+    """
+    )
+
+    servicos = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return render_template("buscar.html", usuario=usuario, servicos=servicos)
 
 # =====================================================
 # PROVER SERVIÇOS
@@ -326,13 +422,172 @@ def procura_servicos():
         return redirect(url_for("main.login"))
 
     conn = conectar()
-    cursor = conn.cursor()
+    cursor = conn.cursor(dictionary=True)
+
+    # busca usuario
+    cursor.execute(
+        "SELECT * FROM usuarios WHERE idUsuarios = %s",
+        (session["user_id"],)
+    )
+    usuario = cursor.fetchone()
+
+    # busca serviços do usuario
+    cursor.execute(
+        """
+        SELECT s.*, c.nome AS categoria_nome
+        FROM servicos s
+        LEFT JOIN categorias c ON s.categoria_id = c.id
+        WHERE s.cliente_id = %s
+        ORDER BY s.data_criacao DESC
+        """,
+        (session["user_id"],)
+    )
+    servicos = cursor.fetchall()
 
     cursor.close()
     conn.close()
 
-    return render_template("prover.html")
+    return render_template("prover.html", usuario=usuario, servicos=servicos)
 
+# =====================================================
+# PUBLICAR SERVIÇO
+# =====================================================
+@main.route("/publicar_servico", methods=["POST"])
+def publicar_servico():
+
+    if "user_id" not in session:
+        return redirect(url_for("main.login"))
+
+    titulo       = request.form.get("titulo")
+    categoria_id = request.form.get("categoria_id")
+    valor_min    = request.form.get("valor_min") or None
+    valor_max    = request.form.get("valor_max") or None
+    prazo_dias   = request.form.get("prazo_dias") or None
+    descricao    = request.form.get("descricao")
+
+    # FOTO DO SERVIÇO
+    foto = request.files.get("foto_servico")
+    filename = None
+
+    if foto and allowed_file(foto.filename):
+        filename = secure_filename(f"servico_{session['user_id']}_{foto.filename}")
+        os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+        foto.save(os.path.join(UPLOAD_FOLDER, filename))
+
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        INSERT INTO servicos
+        (cliente_id, categoria_id, titulo, descricao, valor_min, valor_max, prazo_dias, foto)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+        """,
+        (session["user_id"], categoria_id, titulo, descricao, valor_min, valor_max, prazo_dias, filename)
+    )
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return redirect(url_for("main.procura_servicos"))
+
+
+# =====================================================
+# EXCLUIR SERVIÇO
+# =====================================================
+@main.route("/excluir_servico/<int:servico_id>", methods=["POST"])
+def excluir_servico(servico_id):
+
+    if "user_id" not in session:
+        return redirect(url_for("main.login"))
+
+    conn = conectar()
+    cursor = conn.cursor()
+
+    # garante que só o dono pode excluir
+    cursor.execute(
+        "DELETE FROM servicos WHERE id = %s AND cliente_id = %s",
+        (servico_id, session["user_id"])
+    )
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return redirect(url_for("main.procura_servicos"))
+
+# =====================================================
+# DETALHES DO SERVIÇO
+# =====================================================
+@main.route("/servico/<int:servico_id>")
+def detalhe_servico(servico_id):
+
+    if "user_id" not in session:
+        return redirect(url_for("main.login"))
+
+    conn = conectar()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute(
+        "SELECT * FROM usuarios WHERE idUsuarios = %s",
+        (session["user_id"],)
+    )
+    usuario = cursor.fetchone()
+
+    cursor.execute(
+        """
+        SELECT s.*, c.nome AS categoria_nome,
+               u.nome AS cliente_nome,
+               u.foto AS cliente_foto
+        FROM servicos s
+        LEFT JOIN categorias c ON s.categoria_id = c.id
+        LEFT JOIN usuarios u ON s.cliente_id = u.idUsuarios
+        WHERE s.id = %s
+        """,
+        (servico_id,)
+    )
+    servico = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+
+    if not servico:
+        return redirect(url_for("main.buscar_servicos"))
+
+    return render_template("detalhe_servico.html", usuario=usuario, servico=servico)
+
+
+# =====================================================
+# ENVIAR PROPOSTA
+# =====================================================
+@main.route("/enviar_proposta/<int:servico_id>", methods=["POST"])
+def enviar_proposta(servico_id):
+
+    if "user_id" not in session:
+        return redirect(url_for("main.login"))
+
+    mensagem   = request.form.get("mensagem")
+    valor      = request.form.get("valor") or None
+    prazo_dias = request.form.get("prazo_dias") or None
+
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        INSERT INTO propostas
+        (servico_id, prestador_id, mensagem, valor, prazo_dias)
+        VALUES (%s, %s, %s, %s, %s)
+        """,
+        (servico_id, session["user_id"], mensagem, valor, prazo_dias)
+    )
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return redirect(url_for("main.detalhe_servico", servico_id=servico_id))
 
 # =====================================================
 # LOGOUT

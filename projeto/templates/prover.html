@@ -1,203 +1,141 @@
-<!-- templates/prover.html -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Publicar Serviço | ServiceConnect</title>
-
 <link rel="stylesheet" href="{{ url_for('static', filename='css/Style.css') }}">
 <script defer src="{{ url_for('static', filename='js/prover.js') }}"></script>
 </head>
-
 <body>
 
 <header>
-    <div class="logo">ServiceConnect</div>
-
+    <div class="logo">ServiConnect</div>
     <nav>
-        <a href="/">Home</a>
-        <a href="/buscar">Buscar</a>
-        <a href="/perfil">Perfil</a>
-        <a href="/logout" class="btn">Sair</a>
+        <a href="{{ url_for('main.pagina_home') }}">Início</a>
+        <a href="{{ url_for('main.categoria') }}">Categorias</a>
+        <a href="{{ url_for('main.ComoFunciona') }}">Como Funciona</a>
+        <a href="{{ url_for('main.perfil') }}" class="nav-perfil">
+            {% if usuario and usuario.foto %}
+                <img class="nav-perfil-avatar"
+                     src="{{ url_for('static', filename='uploads/' + usuario.foto) }}"
+                     alt="Foto de {{ usuario.nome }}">
+            {% elif usuario and usuario.nome %}
+                <div class="nav-perfil-avatar-fallback">{{ usuario.nome[0].upper() }}</div>
+            {% else %}
+                <div class="nav-perfil-avatar-fallback">?</div>
+            {% endif %}
+            Perfil
+        </a>
+        <a href="{{ url_for('main.logout') }}" class="btn">Sair</a>
     </nav>
 </header>
 
-
 <section class="marketplace">
 
-    <!-- TOPO -->
     <div class="market-topo">
         <div>
-            <h1>Publicar Serviço</h1>
-            <p>Descreva seu projeto e receba propostas de profissionais.</p>
+            <h1>Meus Projetos</h1>
+            <p>Gerencie seus projetos publicados.</p>
         </div>
-
-        <button class="btn-publicar" id="abrirModal">
-            + Novo Projeto
-        </button>
+        <button class="btn-publicar" id="abrirModal">+ Novo Projeto</button>
     </div>
-
 
     <div class="market-grid">
 
-        <!-- SIDEBAR -->
         <aside class="sidebar">
-
             <div class="box">
                 <h3>Dicas</h3>
-
                 <p>• Explique claramente o que precisa.</p>
                 <p>• Informe prazo realista.</p>
                 <p>• Defina orçamento.</p>
                 <p>• Escolha a categoria certa.</p>
             </div>
-
-
-            <div class="box">
-                <h3>Status</h3>
-
-                <button class="cat ativo">Projetos Ativos</button>
-                <button class="cat">Em Andamento</button>
-                <button class="cat">Finalizados</button>
-            </div>
-
         </aside>
 
-
-
-        <!-- CONTEUDO -->
         <main class="conteudo">
-
-            <div class="filtros-topo">
-
-                <input type="text" placeholder="Buscar meus projetos...">
-
-                <select>
-                    <option>Mais recentes</option>
-                    <option>Maior valor</option>
-                    <option>Menor valor</option>
-                </select>
-
-            </div>
-
-
             <div id="listaPropostas">
 
+                {% if servicos %}
+                    {% for s in servicos %}
+                    <div class="job-card">
 
-                <!-- CARD -->
-                <div class="job-card">
+                        {% if s.foto %}
+                            <img
+                                src="{{ url_for('static', filename='uploads/' + s.foto) }}"
+                                class="servico-foto"
+                                alt="Foto do serviço">
+                        {% endif %}
 
-                    <h2>Criação de Site Empresarial</h2>
+                        <h2>{{ s.titulo }}</h2>
+                        <p>{{ s.descricao }}</p>
+                        <div class="tags">
+                            <span>{{ s.categoria_nome or 'Sem categoria' }}</span>
+                            <span>{{ s.status }}</span>
+                        </div>
+                        <div class="job-footer">
+                            <strong>
+                                {% if s.valor_min and s.valor_max %}
+                                    R$ {{ s.valor_min }} - R$ {{ s.valor_max }}
+                                {% elif s.valor_min %}
+                                    A partir de R$ {{ s.valor_min }}
+                                {% else %}
+                                    A combinar
+                                {% endif %}
+                            </strong>
+                            <span>{{ s.prazo_dias }} dias</span>
 
-                    <p>
-                        Preciso de site moderno responsivo para minha empresa.
-                    </p>
-
-                    <div class="tags">
-                        <span>Programação</span>
-                        <span>Website</span>
+                            <form method="POST"
+                                  action="{{ url_for('main.excluir_servico', servico_id=s.id) }}"
+                                  onsubmit="return confirm('Tem certeza que deseja excluir este projeto?')">
+                                <button type="submit" class="btn-excluir">🗑 Excluir</button>
+                            </form>
+                        </div>
                     </div>
-
-                    <div class="job-footer">
-                        <strong>R$ 2.000</strong>
-                        <button>Ver Propostas</button>
-                    </div>
-
-                </div>
-
-
-
-                <!-- CARD -->
-                <div class="job-card">
-
-                    <h2>Logo para Loja Virtual</h2>
-
-                    <p>
-                        Necessário logo profissional minimalista.
-                    </p>
-
-                    <div class="tags">
-                        <span>Design</span>
-                        <span>Branding</span>
-                    </div>
-
-                    <div class="job-footer">
-                        <strong>R$ 500</strong>
-                        <button>Ver Propostas</button>
-                    </div>
-
-                </div>
-
-
-
-                <!-- CARD -->
-                <div class="job-card">
-
-                    <h2>Gestão de Instagram</h2>
-
-                    <p>
-                        Busco especialista para redes sociais da empresa.
-                    </p>
-
-                    <div class="tags">
-                        <span>Marketing</span>
-                        <span>Instagram</span>
-                    </div>
-
-                    <div class="job-footer">
-                        <strong>R$ 900</strong>
-                        <button>Ver Propostas</button>
-                    </div>
-
-                </div>
-
+                    {% endfor %}
+                {% else %}
+                    <p>Você ainda não publicou nenhum projeto.</p>
+                {% endif %}
 
             </div>
-
         </main>
 
     </div>
-
 </section>
-
-
 
 <!-- MODAL -->
 <div class="modal hidden" id="modal">
-
     <div class="modal-box">
-
         <span class="fechar" id="fecharModal">×</span>
-
         <h2>Novo Projeto</h2>
 
-        <form method="POST">
+        <form method="POST" action="{{ url_for('main.publicar_servico') }}" enctype="multipart/form-data">
 
             <input type="text" name="titulo" placeholder="Título do projeto" required>
 
             <select name="categoria_id" required>
                 <option value="">Selecione categoria</option>
-                <option value="1">Design</option>
-                <option value="2">Programação</option>
-                <option value="3">Marketing</option>
-                <option value="4">Reformas</option>
+                <option value="16">Design</option>
+                <option value="17">Programação</option>
+                <option value="18">Marketing</option>
+                <option value="19">Reformas</option>
+                <option value="20">Eletricista</option>
+                <option value="21">Encanador</option>
+                <option value="22">Pedreiro</option>
             </select>
 
             <input type="number" name="valor_min" placeholder="Valor mínimo">
-
             <input type="number" name="valor_max" placeholder="Valor máximo">
-
             <input type="number" name="prazo_dias" placeholder="Prazo em dias">
-
             <textarea name="descricao" placeholder="Descreva seu projeto"></textarea>
 
+            <!-- FOTO DO SERVIÇO -->
+            <label>Foto do serviço (opcional)</label>
+            <input type="file" name="foto_servico" accept="image/*">
+
             <button type="submit">Publicar Projeto</button>
-
         </form>
-
     </div>
-
 </div>
 
 </body>

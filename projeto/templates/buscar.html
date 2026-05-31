@@ -1,11 +1,9 @@
-<!-- templates/prover.html -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Propostas | ServiceConnect</title>
-
+<title>Propostas | ServiConnect</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/Style.css') }}">
 <script defer src="{{ url_for('static', filename='js/buscar.js') }}"></script>
 </head>
@@ -13,145 +11,123 @@
 <body>
 
 <header>
-    <div class="logo">ServiceConnect</div>
-
+    <div class="logo">ServiConnect</div>
     <nav>
-        <a href="/">Home</a>
-        <a href="/perfil">Perfil</a>
-        <a href="/logout" class="btn">Sair</a>
+        <a href="{{ url_for('main.pagina_home') }}">Início</a>
+        <a href="{{ url_for('main.categoria') }}">Categorias</a>
+        <a href="{{ url_for('main.ComoFunciona') }}">Como Funciona</a>
+        <a href="{{ url_for('main.perfil') }}" class="nav-perfil">
+            {% if usuario and usuario.foto %}
+                <img class="nav-perfil-avatar"
+                     src="{{ url_for('static', filename='uploads/' + usuario.foto) }}"
+                     alt="Foto de {{ usuario.nome }}">
+            {% elif usuario and usuario.nome %}
+                <div class="nav-perfil-avatar-fallback">{{ usuario.nome[0].upper() }}</div>
+            {% else %}
+                <div class="nav-perfil-avatar-fallback">?</div>
+            {% endif %}
+            Perfil
+        </a>
+        <a href="{{ url_for('main.logout') }}" class="btn">Sair</a>
     </nav>
 </header>
 
-
 <section class="marketplace">
-
-   
 
     <div class="market-grid">
 
-        <!-- SIDEBAR -->
         <aside class="sidebar">
-
             <div class="box">
                 <h3>Categorias</h3>
-
                 <button class="cat ativo" data-cat="todos">Todas</button>
                 <button class="cat" data-cat="Design">Design</button>
                 <button class="cat" data-cat="Programação">Programação</button>
                 <button class="cat" data-cat="Marketing">Marketing</button>
-                <button class="cat" data-cat="Redação">Redação</button>
+                <button class="cat" data-cat="Reformas">Reformas</button>
+                <button class="cat" data-cat="Eletricista">Eletricista</button>
+                <button class="cat" data-cat="Encanador">Encanador</button>
+                <button class="cat" data-cat="Pedreiro">Pedreiro</button>
             </div>
-
 
             <div class="box">
                 <h3>Filtrar valor</h3>
-
                 <button class="valor" data-min="0" data-max="500">Até R$500</button>
                 <button class="valor" data-min="501" data-max="1000">R$500 - R$1000</button>
                 <button class="valor" data-min="1001" data-max="999999">Acima R$1000</button>
             </div>
-
         </aside>
 
-
-
-        <!-- CONTEÚDO -->
         <main class="conteudo">
 
             <div class="filtros-topo">
-
                 <input type="text" id="buscar" placeholder="Buscar proposta...">
-
                 <select id="ordenar">
                     <option value="recentes">Mais recentes</option>
                     <option value="maior">Maior valor</option>
                     <option value="menor">Menor valor</option>
                 </select>
-
             </div>
-
 
             <div id="listaPropostas">
 
+                {% if servicos %}
+                    {% for s in servicos %}
+                    <div class="job-card"
+                         data-cat="{{ s.categoria_nome or 'todos' }}"
+                         data-valor="{{ s.valor_max or s.valor_min or 0 }}">
 
-                <div class="job-card"
-                     data-cat="Design"
-                     data-valor="500">
+                        {% if s.foto %}
+                            <img src="{{ url_for('static', filename='uploads/' + s.foto) }}"
+                                 class="servico-foto" alt="Foto do serviço">
+                        {% endif %}
 
-                    <h2>Criação de Logo Profissional</h2>
+                        <!-- INFO DO USUARIO -->
+                        <div class="card-usuario">
+                            {% if s.cliente_foto %}
+                                <img src="{{ url_for('static', filename='uploads/' + s.cliente_foto) }}"
+                                     class="card-avatar" alt="{{ s.cliente_nome }}">
+                            {% else %}
+                                <div class="card-avatar-fallback">{{ s.cliente_nome[0].upper() }}</div>
+                            {% endif %}
+                            <span>{{ s.cliente_nome }}</span>
+                        </div>
 
-                    <p>
-                        Preciso de identidade visual moderna para empresa.
-                    </p>
+                        <h2>{{ s.titulo }}</h2>
+                        <p>{{ s.descricao }}</p>
 
-                    <div class="tags">
-                        <span>Logo</span>
-                        <span>Branding</span>
+                        <div class="tags">
+                            <span>{{ s.categoria_nome or 'Sem categoria' }}</span>
+                            {% if s.prazo_dias %}
+                                <span>{{ s.prazo_dias }} dias</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="job-footer">
+                            <strong>
+                                {% if s.valor_min and s.valor_max %}
+                                    R$ {{ s.valor_min }} - R$ {{ s.valor_max }}
+                                {% elif s.valor_min %}
+                                    A partir de R$ {{ s.valor_min }}
+                                {% else %}
+                                    A combinar
+                                {% endif %}
+                            </strong>
+                            <button class="btn-detalhes"onclick="window.location.href='{{ url_for('main.detalhe_servico', servico_id=s.id) }}'">
+                             Ver detalhes
+                            </button>
+                        </div>
+
                     </div>
-
-                    <div class="job-footer">
-                        <strong>R$ 500</strong>
-                        <button>Ver detalhes</button>
-                    </div>
-
-                </div>
-
-
-
-                <div class="job-card"
-                     data-cat="Programação"
-                     data-valor="1800">
-
-                    <h2>Desenvolvimento de Site</h2>
-
-                    <p>
-                        Site profissional responsivo para empresa.
-                    </p>
-
-                    <div class="tags">
-                        <span>HTML</span>
-                        <span>Flask</span>
-                    </div>
-
-                    <div class="job-footer">
-                        <strong>R$ 1800</strong>
-                        <button>Ver detalhes</button>
-                    </div>
-
-                </div>
-
-
-
-                <div class="job-card"
-                     data-cat="Marketing"
-                     data-valor="900">
-
-                    <h2>Gestão de Instagram</h2>
-
-                    <p>
-                        Procuramos freelancer para redes sociais.
-                    </p>
-
-                    <div class="tags">
-                        <span>Social Media</span>
-                        <span>Ads</span>
-                    </div>
-
-                    <div class="job-footer">
-                        <strong>R$ 900</strong>
-                        <button>Ver detalhes</button>
-                    </div>
-
-                </div>
-
+                    {% endfor %}
+                {% else %}
+                    <p>Nenhum serviço disponível no momento.</p>
+                {% endif %}
 
             </div>
-
         </main>
 
     </div>
-
 </section>
 
-
-
+</body>
+</html>

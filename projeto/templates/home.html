@@ -34,8 +34,26 @@
             Como Funciona
         </a>
 
-        <a href="{{ url_for('main.perfil') }}">
+        <!-- PERFIL COM FOTO -->
+        <a href="{{ url_for('main.perfil') }}" class="nav-perfil">
+
+            {% if usuario and usuario.foto %}
+            <img
+               class="nav-perfil-avatar"
+                src="{{ url_for('static', filename='uploads/' + usuario.foto) }}"
+                alt="Foto de {{ usuario.nome }}">
+            {% elif usuario and usuario.nome %}
+                <div class="nav-perfil-avatar-fallback">
+                    {{ usuario.nome[0].upper() }}
+                </div>
+            {% else %}
+                <div class="nav-perfil-avatar-fallback">
+                    ?
+                </div>
+            {% endif %}
+
             Perfil
+
         </a>
 
         <a href="{{ url_for('main.logout') }}" class="btn">
