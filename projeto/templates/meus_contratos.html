@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meus Contratos | ServiConnect</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/Style.css') }}">
+</head>
+<body>
+
+<header>
+    <div class="logo">ServiConnect</div>
+    <nav>
+        <a href="{{ url_for('main.pagina_home') }}">Início</a>
+        <a href="{{ url_for('main.perfil') }}" class="nav-perfil">
+            {% if usuario and usuario.foto %}
+                <img class="nav-perfil-avatar"
+                     src="{{ url_for('static', filename='uploads/' + usuario.foto) }}"
+                     alt="Foto de {{ usuario.nome }}">
+            {% elif usuario and usuario.nome %}
+                <div class="nav-perfil-avatar-fallback">{{ usuario.nome[0].upper() }}</div>
+            {% else %}
+                <div class="nav-perfil-avatar-fallback">?</div>
+            {% endif %}
+            Perfil
+        </a>
+        <a href="{{ url_for('main.logout') }}" class="btn">Sair</a>
+    </nav>
+</header>
+
+<section class="propostas-container">
+
+    <h1 style="margin-bottom: 24px;">📄 Meus Contratos</h1>
+
+    {% if contratos %}
+        {% for c in contratos %}
+        <div class="proposta-card status-borda-{{ c.status }}">
+
+            <div class="proposta-topo">
+                <div>
+                    <h3>{{ c.servico_titulo }}</h3>
+                    <small style="color:#999;">
+                        Contrato #{{ c.id }} —
+                        {{ c.data_inicio.strftime('%d/%m/%Y') if c.data_inicio else '' }}
+                    </small>
+                </div>
+                <span class="proposta-badge status-{{ c.status }}">
+                    {% if c.status == 'ativo' %}🟡 Ativo
+                    {% elif c.status == 'finalizado' %}✅ Finalizado
+                    {% elif c.status == 'cancelado' %}❌ Cancelado
+                    {% endif %}
+                </span>
+            </div>
+
+            <div class="proposta-valores">
+                <div class="proposta-valor-item">
+                    <span>👤 Cliente</span>
+                    <strong>{{ c.cliente_nome }}</strong>
+                </div>
+                <div class="proposta-valor-item">
+                    <span>🔧 Prestador</span>
+                    <strong>{{ c.prestador_nome }}</strong>
+                </div>
+                <div class="proposta-valor-item">
+                    <span>💰 Valor</span>
+                    <strong>R$ {{ c.valor_final or 'A combinar' }}</strong>
+                </div>
+            </div>
+
+            <div style="margin-top: 12px;">
+                <a href="{{ url_for('main.ver_contrato', contrato_id=c.id) }}"
+                   class="btn-aceitar" style="text-decoration:none; display:inline-block; padding: 8px 20px;">
+                    📄 Ver Contrato
+                </a>
+            </div>
+
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="proposta-vazia">
+            <div class="proposta-vazia-icon">📭</div>
+            <h3>Nenhum contrato ainda</h3>
+            <p>Contratos aparecerão aqui quando propostas forem aceitas.</p>
+        </div>
+    {% endif %}
+
+</section>
+
+</body>
+</html>

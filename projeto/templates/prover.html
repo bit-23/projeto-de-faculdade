@@ -44,6 +44,7 @@
     <div class="market-grid">
 
         <aside class="sidebar">
+
             <div class="box">
                 <h3>Dicas</h3>
                 <p>• Explique claramente o que precisa.</p>
@@ -51,6 +52,19 @@
                 <p>• Defina orçamento.</p>
                 <p>• Escolha a categoria certa.</p>
             </div>
+
+            {% if servicos %}
+            <div class="box">
+                <h3>Propostas</h3>
+                {% for s in servicos %}
+                    <a href="{{ url_for('main.ver_propostas', servico_id=s.id) }}"
+                       class="btn-propostas-sidebar">
+                        📬 {{ s.titulo }}
+                    </a>
+                {% endfor %}
+            </div>
+            {% endif %}
+
         </aside>
 
         <main class="conteudo">
@@ -61,18 +75,18 @@
                     <div class="job-card">
 
                         {% if s.foto %}
-                            <img
-                                src="{{ url_for('static', filename='uploads/' + s.foto) }}"
-                                class="servico-foto"
-                                alt="Foto do serviço">
+                            <img src="{{ url_for('static', filename='uploads/' + s.foto) }}"
+                                 class="servico-foto" alt="Foto do serviço">
                         {% endif %}
 
                         <h2>{{ s.titulo }}</h2>
                         <p>{{ s.descricao }}</p>
+
                         <div class="tags">
                             <span>{{ s.categoria_nome or 'Sem categoria' }}</span>
                             <span>{{ s.status }}</span>
                         </div>
+
                         <div class="job-footer">
                             <strong>
                                 {% if s.valor_min and s.valor_max %}
@@ -124,12 +138,11 @@
                 <option value="22">Pedreiro</option>
             </select>
 
-            <input type="number" name="valor_min" placeholder="Valor mínimo">
-            <input type="number" name="valor_max" placeholder="Valor máximo">
-            <input type="number" name="prazo_dias" placeholder="Prazo em dias">
-            <textarea name="descricao" placeholder="Descreva seu projeto"></textarea>
+            <input type="number" name="valor_min" placeholder="Orçamento mínimo (R$)">
+            <input type="number" name="valor_max" placeholder="Orçamento máximo (R$)">
+            <input type="number" name="prazo_dias" placeholder="Prazo máximo em dias">
+            <textarea name="descricao" placeholder="Descreva seu projeto detalhadamente"></textarea>
 
-            <!-- FOTO DO SERVIÇO -->
             <label>Foto do serviço (opcional)</label>
             <input type="file" name="foto_servico" accept="image/*">
 

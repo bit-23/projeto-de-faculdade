@@ -99,16 +99,22 @@ nav a:hover {
 }
 
 .hero-image {
-    flex: 1;
+     flex: 1;
     display: flex;
     justify-content: center;
-    z-index: 2;
+    align-items: flex-end;
+    height: 420px;
+    overflow: hidden;
+    padding-top: 90px;
+
 }
 
 .hero-image img {
-    max-width: 320px;
-    height: auto;
-    filter: drop-shadow(0 8px 24px rgba(0,0,0,0.2));
+    height: 420px;
+    width: auto;
+    object-fit: contain;
+    object-position: bottom;
+    filter: drop-shadow(0 10px 30px rgba(0,0,0,0.3));
 }
 
 .buttons {
@@ -1293,6 +1299,281 @@ input.invalido {
 
 @media (max-width: 768px) {
     .detalhe-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+
+.btn-propostas-sidebar {
+    display: block;
+    background: #6c63ff;
+    color: white;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.btn-propostas-sidebar:hover {
+    background: #574fd6;
+}
+
+/* Propostas */
+
+.propostas-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.propostas-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 20px 0 30px;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.propostas-header h1 {
+    font-size: 22px;
+    margin-bottom: 6px;
+}
+
+.propostas-header p {
+    color: #666;
+    font-size: 14px;
+}
+
+.propostas-contador {
+    background: #6c63ff;
+    color: white;
+    border-radius: 12px;
+    padding: 12px 20px;
+    text-align: center;
+    font-size: 13px;
+    min-width: 80px;
+}
+
+.propostas-contador span {
+    display: block;
+    font-size: 28px;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.propostas-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.proposta-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border-left: 4px solid #ddd;
+}
+
+.status-borda-pendente { border-left-color: #f39c12; }
+.status-borda-aceita   { border-left-color: #2ecc71; }
+.status-borda-recusada { border-left-color: #e74c3c; }
+
+.proposta-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.card-usuario {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.card-usuario div {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-usuario small {
+    color: #999;
+    font-size: 12px;
+}
+
+.proposta-badge {
+    font-size: 13px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+.status-pendente { background: #fff3cd; color: #856404; }
+.status-aceita   { background: #d1f2eb; color: #1e8449; }
+.status-recusada { background: #fde8e8; color: #c0392b; }
+
+.proposta-mensagem {
+    color: #444;
+    line-height: 1.6;
+    margin-bottom: 16px;
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.proposta-valores {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 16px;
+}
+
+.proposta-valor-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 13px;
+    color: #666;
+}
+
+.proposta-valor-item strong {
+    font-size: 16px;
+    color: #333;
+}
+
+.proposta-acoes {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.proposta-vazia {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+}
+
+.proposta-vazia-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+}
+
+.proposta-vazia h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+.contrato-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.contrato-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.contrato-header h1 {
+    font-size: 24px;
+    margin-bottom: 4px;
+}
+
+.contrato-header p {
+    color: #666;
+    font-size: 14px;
+}
+
+.contrato-status {
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.status-ativo     { background: #fff3cd; color: #856404; }
+.status-finalizado { background: #d1f2eb; color: #1e8449; }
+.status-cancelado { background: #fde8e8; color: #c0392b; }
+
+.contrato-box {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.contrato-box h2 {
+    font-size: 16px;
+    color: #444;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.contrato-box h3 {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.contrato-box p {
+    color: #555;
+    line-height: 1.6;
+}
+
+.contrato-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.contrato-parte {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.assinatura-badge {
+    font-size: 13px;
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+
+.assinatura-badge.assinado  { background: #d1f2eb; color: #1e8449; }
+.assinatura-badge.pendente  { background: #fff3cd; color: #856404; }
+
+.contrato-termos {
+    margin-top: 16px;
+    padding: 16px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.contrato-termos p {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .contrato-grid {
         grid-template-columns: 1fr;
     }
 }

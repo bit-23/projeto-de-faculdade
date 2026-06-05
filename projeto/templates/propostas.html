@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Propostas | ServiConnect</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/Style.css') }}">
+</head>
+<body>
+
+<header>
+    <div class="logo">ServiConnect</div>
+    <nav>
+        <a href="{{ url_for('main.pagina_home') }}">Início</a>
+        <a href="{{ url_for('main.categoria') }}">Categorias</a>
+        <a href="{{ url_for('main.ComoFunciona') }}">Como Funciona</a>
+        <a href="{{ url_for('main.meus_contratos') }}">Contratos</a>
+        <a href="{{ url_for('main.perfil') }}" class="nav-perfil">
+            {% if usuario and usuario.foto %}
+                <img class="nav-perfil-avatar"
+                     src="{{ url_for('static', filename='uploads/' + usuario.foto) }}"
+                     alt="Foto de {{ usuario.nome }}">
+            {% elif usuario and usuario.nome %}
+                <div class="nav-perfil-avatar-fallback">{{ usuario.nome[0].upper() }}</div>
+            {% else %}
+                <div class="nav-perfil-avatar-fallback">?</div>
+            {% endif %}
+            Perfil
+        </a>
+        <a href="{{ url_for('main.logout') }}" class="btn">Sair</a>
+    </nav>
+</header>
+
+<section class="propostas-container">
+
+    <a href="{{ url_for('main.procura_servicos') }}" class="btn-voltar">
+        ← Voltar para Meus Projetos
+    </a>
+
+    <div class="propostas-header">
+        <div>
+            <h1>{{ servico.titulo }}</h1>
+            <p>{{ servico.descricao }}</p>
+        </div>
+        {% if propostas %}
+            <div class="propostas-contador">
+                <span>{{ propostas|length }}</span>
+                proposta(s)
+            </div>
+        {% endif %}
+    </div>
+
+    {% if propostas %}
+
+        <div class="propostas-lista">
+        {% for p in propostas %}
+        <div class="proposta-card status-borda-{{ p.status }}">
+
+            <div class="proposta-topo">
+
+                <div class="card-usuario">
+                    {% if p.prestador_foto %}
+                        <img src="{{ url_for('static', filename='uploads/' + p.prestador_foto) }}"
+                             class="card-avatar" alt="{{ p.prestador_nome }}">
+                    {% else %}
+                        <div class="card-avatar-fallback">{{ p.prestador_nome[0].upper() }}</div>
+                    {% endif %}
+                    <div>
+                        <strong>{{ p.prestador_nome }}</strong>
+                        <small>{{ p.data_envio.strftime('%d/%m/%Y às %H:%M') if p.data_envio else '' }}</small>
+                    </div>
+                </div>
+
+                <span class="proposta-badge status-{{ p.status }}">
+                    {% if p.status == 'pendente' %}⏳ Pendente
+                    {% elif p.status == 'aceita' %}✅ Aceita
+                    {% elif p.status == 'recusada' %}❌ Recusada
+                    {% endif %}
+                </span>
+
+            </div>
+
+            <p class="proposta-mensagem">{{ p.mensagem }}</p>
+
+            <div class="proposta-valores">
+                <div class="proposta-valor-item">
+                    <span>💰 Valor proposto</span>
+                    <strong>
+                        {% if p.valor %}R$ {{ p.valor }}
+                        {% else %}A combinar{% endif %}
+                    </strong>
+                </div>
+                <div class="proposta-valor-item">
+                    <span>📅 Prazo</span>
+                    <strong>
+                        {% if p.prazo_dias %}{{ p.prazo_dias }} dias
+                        {% else %}A definir{% endif %}
+                    </strong>
+                </div>
+            </div>
+
+            <!-- BOTÕES -->
+            {% if p.status == 'pendente' %}
+            <div class="proposta-acoes">
+                <form method="POST"
+                      action="{{ url_for('main.responder_proposta', proposta_id=p.id, acao='aceita') }}">
+                    <button type="submit" class="btn-aceitar">✅ Aceitar Proposta</button>
+                </form>
+                <form method="POST"
+                      action="{{ url_for('main.responder_proposta', proposta_id=p.id, acao='recusada') }}">
+                    <button type="submit" class="btn-recusar">❌ Recusar</button>
+                </form>
+            </div>
+            {% endif %}
+
+            <!-- LINK CONTRATO SE ACEITA -->
+            {% if p.status == 'aceita' %}
+            <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #f0f0f0;">
+                <a href="{{ url_for('main.meus_contratos') }}"
+                   class="btn-aceitar"
+                   style="text-decoration: none; display: inline-block; padding: 8px 20px;">
+                    📄 Ver Contrato
+                </a>
+            </div>
+            {% endif %}
+
+        </div>
+        {% endfor %}
+        </div>
+
+    {% else %}
+        <div class="proposta-vazia">
+            <div class="proposta-vazia-icon">📭</div>
+            <h3>Nenhuma proposta ainda</h3>
+            <p>Quando prestadores enviarem propostas, elas aparecerão aqui.</p>
+        </div>
+    {% endif %}
+
+</section>
+
+</body>
+</html>

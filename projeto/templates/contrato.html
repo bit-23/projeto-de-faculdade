@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contrato | ServiConnect</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/Style.css') }}">
+</head>
+<body>
+
+<header>
+    <div class="logo">ServiConnect</div>
+    <nav>
+        <a href="{{ url_for('main.pagina_home') }}">Início</a>
+        <a href="{{ url_for('main.meus_contratos') }}">Meus Contratos</a>
+        <a href="{{ url_for('main.perfil') }}" class="nav-perfil">
+            {% if usuario and usuario.foto %}
+                <img class="nav-perfil-avatar"
+                     src="{{ url_for('static', filename='uploads/' + usuario.foto) }}"
+                     alt="Foto de {{ usuario.nome }}">
+            {% elif usuario and usuario.nome %}
+                <div class="nav-perfil-avatar-fallback">{{ usuario.nome[0].upper() }}</div>
+            {% else %}
+                <div class="nav-perfil-avatar-fallback">?</div>
+            {% endif %}
+            Perfil
+        </a>
+        <a href="{{ url_for('main.logout') }}" class="btn">Sair</a>
+    </nav>
+</header>
+
+<section class="contrato-container">
+
+    <div class="contrato-header">
+        <div>
+            <h1>📄 Contrato de Serviço</h1>
+            <p>Contrato #{{ contrato.id }} — {{ contrato.data_inicio.strftime('%d/%m/%Y') if contrato.data_inicio else '' }}</p>
+        </div>
+        <span class="contrato-status status-{{ contrato.status }}">
+            {% if contrato.status == 'ativo' %}🟡 Ativo
+            {% elif contrato.status == 'finalizado' %}✅ Finalizado
+            {% elif contrato.status == 'cancelado' %}❌ Cancelado
+            {% endif %}
+        </span>
+    </div>
+
+    <div class="contrato-box">
+        <h2>Objeto do Contrato</h2>
+        <h3>{{ contrato.servico_titulo }}</h3>
+        <p>{{ contrato.servico_descricao }}</p>
+    </div>
+
+    <div class="contrato-grid">
+
+        <!-- PARTES -->
+        <div class="contrato-box">
+            <h2>Partes Envolvidas</h2>
+
+            <div class="contrato-parte">
+                <div class="card-usuario">
+                    {% if contrato.cliente_foto %}
+                        <img src="{{ url_for('static', filename='uploads/' + contrato.cliente_foto) }}"
+                             class="card-avatar" alt="{{ contrato.cliente_nome }}">
+                    {% else %}
+                        <div class="card-avatar-fallback">{{ contrato.cliente_nome[0].upper() }}</div>
+                    {% endif %}
+                    <div>
+                        <strong>{{ contrato.cliente_nome }}</strong>
+                        <small>Contratante</small>
+                    </div>
+                </div>
+                <span class="assinatura-badge {% if contrato.assinatura_cliente %}assinado{% else %}pendente{% endif %}">
+                    {% if contrato.assinatura_cliente %}✅ Assinado{% else %}⏳ Pendente{% endif %}
+                </span>
+            </div>
+
+            <hr style="margin: 16px 0; border-color: #f0f0f0;">
+
+            <div class="contrato-parte">
+                <div class="card-usuario">
+                    {% if contrato.prestador_foto %}
+                        <img src="{{ url_for('static', filename='uploads/' + contrato.prestador_foto) }}"
+                             class="card-avatar" alt="{{ contrato.prestador_nome }}">
+                    {% else %}
+                        <div class="card-avatar-fallback">{{ contrato.prestador_nome[0].upper() }}</div>
+                    {% endif %}
+                    <div>
+                        <strong>{{ contrato.prestador_nome }}</strong>
+                        <small>Prestador de Serviço</small>
+                    </div>
+                </div>
+                <span class="assinatura-badge {% if contrato.assinatura_prestador %}assinado{% else %}pendente{% endif %}">
+                    {% if contrato.assinatura_prestador %}✅ Assinado{% else %}⏳ Pendente{% endif %}
+                </span>
+            </div>
+        </div>
+
+        <!-- TERMOS -->
+        <div class="contrato-box">
+            <h2>Termos e Condições</h2>
+
+            <div class="detalhe-info">
+                <span>💰 Valor acordado</span>
+                <strong>R$ {{ contrato.valor_final or 'A combinar' }}</strong>
+            </div>
+            <div class="detalhe-info">
+                <span>📅 Prazo</span>
+                <strong>{{ contrato.proposta_prazo }} dias</strong>
+            </div>
+            <div class="detalhe-info">
+                <span>📋 Status</span>
+                <strong>{{ contrato.status.capitalize() }}</strong>
+            </div>
+
+            <div class="contrato-termos">
+                <p>1. O prestador se compromete a entregar o serviço conforme descrito.</p>
+                <p>2. O pagamento será realizado conforme valor acordado.</p>
+                <p>3. Alterações no escopo devem ser combinadas entre as partes.</p>
+                <p>4. Em caso de descumprimento, as partes poderão acionar suporte da plataforma.</p>
+                <p>5. O prazo de entrega será de <strong>{{ contrato.proposta_prazo }} dias</strong> após a assinatura de ambas as partes.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- BOTÃO ASSINAR -->
+    {% set ja_assinou = (usuario.idUsuarios == contrato.cliente_id and contrato.assinatura_cliente) or
+                        (usuario.idUsuarios == contrato.prestador_id and contrato.assinatura_prestador) %}
+
+    {% if not ja_assinou %}
+    <div class="contrato-box" style="text-align: center;">
+        <h2>Assinar Contrato</h2>
+        <p style="color: #666; margin-bottom: 20px;">
+            Ao assinar, você concorda com todos os termos descritos acima.
+        </p>
+        <form method="POST" action="{{ url_for('main.assinar_contrato', contrato_id=contrato.id) }}">
+            <label style="display:flex; align-items:center; gap:10px; justify-content:center; margin-bottom:16px; cursor:pointer;">
+                <input type="checkbox" id="concordo" required>
+                <span>Li e concordo com os termos do contrato</span>
+            </label>
+            <button type="submit" class="btn-aceitar" style="padding: 12px 32px; font-size: 16px;">
+                ✍️ Assinar Digitalmente
+            </button>
+        </form>
+    </div>
+    {% else %}
+    <div class="contrato-box" style="text-align: center; background: #d1f2eb;">
+        <p style="color: #1e8449; font-size: 16px; font-weight: bold;">✅ Você já assinou este contrato!</p>
+        {% if contrato.assinatura_cliente and contrato.assinatura_prestador %}
+            <p style="color: #1e8449; margin-top: 8px;">🎉 Contrato totalmente assinado por ambas as partes!</p>
+        {% else %}
+            <p style="color: #856404; margin-top: 8px;">⏳ Aguardando assinatura da outra parte.</p>
+        {% endif %}
+    </div>
+    {% endif %}
+
+</section>
+
+</body>
+</html>

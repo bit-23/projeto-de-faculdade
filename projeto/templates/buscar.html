@@ -81,7 +81,6 @@
                                  class="servico-foto" alt="Foto do serviço">
                         {% endif %}
 
-                        <!-- INFO DO USUARIO -->
                         <div class="card-usuario">
                             {% if s.cliente_foto %}
                                 <img src="{{ url_for('static', filename='uploads/' + s.cliente_foto) }}"
@@ -112,8 +111,19 @@
                                     A combinar
                                 {% endif %}
                             </strong>
-                            <button class="btn-detalhes"onclick="window.location.href='{{ url_for('main.detalhe_servico', servico_id=s.id) }}'">
-                             Ver detalhes
+         
+                            <button class="btn-detalhes"
+                            data-titulo="{{ s.titulo }}"
+                            data-descricao="{{ s.descricao }}"
+                            data-cliente="{{ s.cliente_nome }}"
+                            data-foto-cliente="{{ s.cliente_foto or '' }}"
+                            data-categoria="{{ s.categoria_nome or 'Sem categoria' }}"
+                            data-valor-min="{{ s.valor_min or '' }}"
+                            data-valor-max="{{ s.valor_max or '' }}"
+                            data-prazo="{{ s.prazo_dias or '' }}"
+                            data-foto="{{ s.foto or '' }}"
+                            data-id="{{ s.id }}">
+                                Ver detalhes
                             </button>
                         </div>
 
@@ -128,6 +138,65 @@
 
     </div>
 </section>
+
+<!-- MODAL DETALHES -->
+<div class="modal hidden" id="modalDetalhes">
+    <div class="modal-box modal-detalhe-box">
+
+        <span class="fechar" id="fecharDetalhes">×</span>
+
+        <div id="modalFotoServico"></div>
+
+        <div class="card-usuario" style="margin: 16px 0 8px;">
+            <div id="modalAvatarCliente"></div>
+            <strong id="modalNomeCliente"></strong>
+        </div>
+
+        <h2 id="modalTitulo"></h2>
+        <p id="modalDescricao" style="color:#555; margin: 10px 0 16px; line-height:1.6;"></p>
+
+        <div class="detalhe-info">
+            <span>📁 Categoria</span>
+            <strong id="modalCategoria"></strong>
+        </div>
+        <div class="detalhe-info">
+            <span>💰 Orçamento</span>
+            <strong id="modalValor"></strong>
+        </div>
+        <div class="detalhe-info">
+            <span>📅 Prazo máximo</span>
+            <strong id="modalPrazo"></strong>
+        </div>
+
+        <hr style="margin: 20px 0;">
+
+        <h3 style="margin-bottom: 12px;">Enviar Proposta</h3>
+
+        <form method="POST" id="formProposta">
+
+            <div class="campo">
+                <label>Seu valor (R$)</label>
+                <input type="number" name="valor" placeholder="Ex: 500" required>
+            </div>
+
+            <div class="campo">
+                <label>Seu prazo (dias)</label>
+                <input type="number" name="prazo_dias" placeholder="Ex: 7" required>
+            </div>
+
+            <div class="campo">
+                <label>Mensagem</label>
+                <textarea name="mensagem" rows="4"
+                          placeholder="Descreva sua proposta..."></textarea>
+            </div>
+
+            <button type="submit" class="btn-primary" style="width:100%;">
+                Enviar Proposta
+            </button>
+        </form>
+
+    </div>
+</div>
 
 </body>
 </html>
