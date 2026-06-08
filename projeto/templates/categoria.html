@@ -10,40 +10,37 @@
 
 <header>
     <div class="logo">ServiConnect</div>
-
     <nav>
-     <a href="{{ url_for('main.pagina_home') }}">Início</a>
-     <a href="{{ url_for('main.categoria') }}">Categorias</a>
-     <a href="{{ url_for('main.ComoFunciona') }}">Como Funciona</a>
-
-     <!-- PERFIL COM FOTO -->
-     <a href="{{ url_for('main.perfil') }}" class="nav-perfil">
-        {% if usuario and usuario.foto %}
-        <img
-         class="nav-perfil-avatar"
-         src="{{ url_for('static', filename='uploads/' + usuario.foto) }}"
-         alt="Foto de {{ usuario.nome }}">
-        {% elif usuario and usuario.nome %}
-        <div class="nav-perfil-avatar-fallback">
-          {{ usuario.nome[0].upper() }}
-        </div>
-        {% else %}
-            <div class="nav-perfil-avatar-fallback">?</div>
-        {% endif %}
-        Perfil
-    </a>
-    <a href="{{ url_for('main.logout') }}" class="btn">Sair</a>
+        <a href="{{ url_for('main.pagina_home') }}">Início</a>
+        <a href="{{ url_for('main.categoria') }}">Categorias</a>
+        <a href="{{ url_for('main.ComoFunciona') }}">Como Funciona</a>
+        <a href="{{ url_for('main.perfil') }}" class="nav-perfil">
+            {% if usuario and usuario.foto %}
+                <img class="nav-perfil-avatar"
+                     src="{{ url_for('static', filename='uploads/' + usuario.foto) }}"
+                     alt="Foto de {{ usuario.nome }}">
+            {% elif usuario and usuario.nome %}
+                <div class="nav-perfil-avatar-fallback">{{ usuario.nome[0].upper() }}</div>
+            {% else %}
+                <div class="nav-perfil-avatar-fallback">?</div>
+            {% endif %}
+            Perfil
+        </a>
+        <a href="{{ url_for('main.logout') }}" class="btn">Sair</a>
     </nav>
 </header>
 
-<section class="categorias">
-    <h2>Escolha uma Categoria</h2>
+<section class="categoria-section">
 
-    <form method="POST">
-        <div class="cards">
+    <h2>Escolha uma Categoria</h2>
+    <p>Selecione a área do serviço que você procura</p>
+
+    <form method="GET" action="{{ url_for('main.buscar_servicos') }}">
+
+        <div class="cards-categoria">
 
             <label class="card-option">
-                <input type="radio" name="categoria" value="eletricista" required>
+                <input type="radio" name="categoria" value="Eletricista" required>
                 <div class="card-content">
                     🔌
                     <p>Eletricista</p>
@@ -51,7 +48,7 @@
             </label>
 
             <label class="card-option">
-                <input type="radio" name="categoria" value="encanador">
+                <input type="radio" name="categoria" value="Encanador">
                 <div class="card-content">
                     🚰
                     <p>Encanador</p>
@@ -59,7 +56,7 @@
             </label>
 
             <label class="card-option">
-                <input type="radio" name="categoria" value="programador">
+                <input type="radio" name="categoria" value="Programação">
                 <div class="card-content">
                     💻
                     <p>Programador</p>
@@ -67,7 +64,7 @@
             </label>
 
             <label class="card-option">
-                <input type="radio" name="categoria" value="designer">
+                <input type="radio" name="categoria" value="Design">
                 <div class="card-content">
                     🎨
                     <p>Designer</p>
@@ -75,16 +72,33 @@
             </label>
 
             <label class="card-option">
-                <input type="radio" name="categoria" value="limpeza">
+                <input type="radio" name="categoria" value="Reformas">
                 <div class="card-content">
-                    🧹
-                    <p>Limpeza</p>
+                    🔧
+                    <p>Reformas</p>
+                </div>
+            </label>
+
+            <label class="card-option">
+                <input type="radio" name="categoria" value="Marketing">
+                <div class="card-content">
+                    📈
+                    <p>Marketing</p>
+                </div>
+            </label>
+
+            <label class="card-option">
+                <input type="radio" name="categoria" value="Pedreiro">
+                <div class="card-content">
+                    🧱
+                    <p>Pedreiro</p>
                 </div>
             </label>
 
         </div>
 
-        <button type="submit" class="btn-confirmar">Confirmar</button>
+        <button type="submit" class="btn-confirmar">Confirmar →</button>
+
     </form>
 
 </section>

@@ -23,7 +23,7 @@ def allowed_file(filename):
 # =====================================================
 def conectar():
     return mysql.connector.connect(
-        host="127.0.0.1",
+        host="100.120.87.102",
         port=3306,
         database="ServiceConnect",
         user="root",
@@ -163,7 +163,21 @@ def cadastro_post():
 # =====================================================
 @main.route("/categoria")
 def categoria():
-    return render_template("categoria.html")
+
+    if "user_id" not in session:
+        return redirect(url_for("main.login"))
+
+    conn = conectar()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(
+        "SELECT * FROM usuarios WHERE idUsuarios = %s",
+        (session["user_id"],)
+    )
+    usuario = cursor.fetchone()
+    cursor.close()
+    conn.close()
+
+    return render_template("categoria.html", usuario=usuario)
 
 
 @main.route("/salvar_categoria", methods=["POST"])
@@ -171,7 +185,6 @@ def salvar_categoria():
     categoria = request.form.get("categoria")
     session["categoria"] = categoria
     return redirect(url_for("main.pagina_home"))
-
 
 # =====================================================
 # COMO FUNCIONA
@@ -347,7 +360,9 @@ def buscar_servicos():
     cursor.close()
     conn.close()
 
-    return render_template("buscar.html", usuario=usuario, servicos=servicos)
+    categoria_selecionada = request.args.get("categoria", "todos")
+
+    return render_template("buscar.html", usuario=usuario, servicos=servicos, categoria_selecionada=categoria_selecionada)
 
 
 # =====================================================
@@ -573,6 +588,47 @@ def responder_proposta(proposta_id, acao):
     conn.close()
 
     return redirect(request.referrer or url_for("main.procura_servicos"))
+
+# =====================================================
+# MINHAS PROPOSTAS (PRESTADOR)
+# =====================================================
+@main.route("/minhas_propostas")
+def minhas_propostas():
+
+    if "user_id" not in session:
+        return redirect(url_for("main.login"))
+
+    conn = conectar()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute(
+        "SELECT * FROM usuarios WHERE idUsuarios = %s",
+        (session["user_id"],)
+    )
+    usuario = cursor.fetchone()
+
+    cursor.execute(
+        """
+        SELECT p.*,
+               s.titulo AS servico_titulo,
+               s.descricao AS servico_descricao,
+               u.nome AS cliente_nome,
+               u.foto AS cliente_foto,
+               c.id AS contrato_id
+        FROM propostas p
+        LEFT JOIN servicos s ON p.servico_id = s.id
+        LEFT JOIN usuarios u ON s.cliente_id = u.idUsuarios
+        LEFT JOIN contratos c ON c.proposta_id = p.id
+        WHERE p.prestador_id = %s
+        ORDER BY p.data_envio DESC
+        """,
+        (session["user_id"],)
+    )
+    propostas = cursor.fetchall()
+    cursor.close()
+    conn.close()
+
+    return render_template("minhas_propostas.html", usuario=usuario, propostas=propostas)
 
 
 # =====================================================

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minhas Propostas | ServiConnect</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/Style.css') }}">
+</head>
+<body>
+
+<header>
+    <div class="logo">ServiConnect</div>
+    <nav>
+        <a href="{{ url_for('main.pagina_home') }}">Início</a>
+        <a href="{{ url_for('main.buscar_servicos') }}">Buscar Serviços</a>
+        <a href="{{ url_for('main.meus_contratos') }}">Contratos</a>
+        <a href="{{ url_for('main.perfil') }}" class="nav-perfil">
+            {% if usuario and usuario.foto %}
+                <img class="nav-perfil-avatar"
+                     src="{{ url_for('static', filename='uploads/' + usuario.foto) }}"
+                     alt="Foto de {{ usuario.nome }}">
+            {% elif usuario and usuario.nome %}
+                <div class="nav-perfil-avatar-fallback">{{ usuario.nome[0].upper() }}</div>
+            {% else %}
+                <div class="nav-perfil-avatar-fallback">?</div>
+            {% endif %}
+            Perfil
+        </a>
+        <a href="{{ url_for('main.logout') }}" class="btn">Sair</a>
+    </nav>
+</header>
+
+<section class="propostas-container">
+
+    <h1 style="margin-bottom: 8px;">📋 Minhas Propostas</h1>
+    <p style="color: #666; margin-bottom: 30px;">Acompanhe o status das propostas que você enviou.</p>
+
+    {% if propostas %}
+        <div class="propostas-lista">
+        {% for p in propostas %}
+        <div class="proposta-card status-borda-{{ p.status }}">
+
+            <div class="proposta-topo">
+                <div>
+                    <h3>{{ p.servico_titulo }}</h3>
+                    <small style="color: #999;">
+                        Enviada em {{ p.data_envio.strftime('%d/%m/%Y às %H:%M') if p.data_envio else '' }}
+                    </small>
+                </div>
+
+                <span class="proposta-badge status-{{ p.status }}">
+                    {% if p.status == 'pendente' %}⏳ Aguardando resposta
+                    {% elif p.status == 'aceita' %}✅ Aceita!
+                    {% elif p.status == 'recusada' %}❌ Recusada
+                    {% endif %}
+                </span>
+            </div>
+
+            <!-- CLIENTE -->
+            <div class="card-usuario" style="margin-bottom: 12px;">
+                {% if p.cliente_foto %}
+                    <img src="{{ url_for('static', filename='uploads/' + p.cliente_foto) }}"
+                         class="card-avatar" alt="{{ p.cliente_nome }}">
+                {% else %}
+                    <div class="card-avatar-fallback">{{ p.cliente_nome[0].upper() }}</div>
+                {% endif %}
+                <div>
+                    <small style="color: #999;">Cliente</small>
+                    <strong>{{ p.cliente_nome }}</strong>
+                </div>
+            </div>
+
+            <!-- MENSAGEM -->
+            <p class="proposta-mensagem">{{ p.mensagem }}</p>
+
+            <!-- VALORES -->
+            <div class="proposta-valores">
+                <div class="proposta-valor-item">
+                    <span>💰 Valor proposto</span>
+                    <strong>{% if p.valor %}R$ {{ p.valor }}{% else %}A combinar{% endif %}</strong>
+                </div>
+                <div class="proposta-valor-item">
+                    <span>📅 Prazo proposto</span>
+                    <strong>{% if p.prazo_dias %}{{ p.prazo_dias }} dias{% else %}A definir{% endif %}</strong>
+                </div>
+            </div>
+
+            <!-- NOTIFICAÇÃO E AÇÕES -->
+            {% if p.status == 'aceita' %}
+            <div class="notificacao-aceita">
+                🎉 Parabéns! Sua proposta foi aceita pelo cliente.
+                {% if p.contrato_id %}
+                    <a href="{{ url_for('main.ver_contrato', contrato_id=p.contrato_id) }}"
+                       class="btn-aceitar"
+                       style="text-decoration:none; display:inline-block; padding: 8px 20px; margin-top: 10px;">
+                        📄 Ver e Assinar Contrato
+                    </a>
+                {% endif %}
+            </div>
+
+            {% elif p.status == 'recusada' %}
+            <div class="notificacao-recusada">
+                😔 Sua proposta foi recusada pelo cliente.
+            </div>
+
+            {% else %}
+            <div class="notificacao-pendente">
+                ⏳ Aguardando resposta do cliente...
+            </div>
+            {% endif %}
+
+        </div>
+        {% endfor %}
+        </div>
+
+    {% else %}
+        <div class="proposta-vazia">
+            <div class="proposta-vazia-icon">📭</div>
+            <h3>Nenhuma proposta enviada ainda</h3>
+            <p>Busque serviços e envie propostas para começar!</p>
+            <a href="{{ url_for('main.buscar_servicos') }}"
+               class="btn-aceitar"
+               style="text-decoration:none; display:inline-block; padding: 10px 24px; margin-top: 16px;">
+                🔍 Buscar Serviços
+            </a>
+        </div>
+    {% endif %}
+
+</section>
+
+</body>
+</html>

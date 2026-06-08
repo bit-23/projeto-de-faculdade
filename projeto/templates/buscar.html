@@ -8,7 +8,7 @@
 <script defer src="{{ url_for('static', filename='js/buscar.js') }}"></script>
 </head>
 
-<body>
+<body data-categoria="{{ categoria_selecionada }}">
 
 <header>
     <div class="logo">ServiConnect</div>
@@ -16,6 +16,8 @@
         <a href="{{ url_for('main.pagina_home') }}">Início</a>
         <a href="{{ url_for('main.categoria') }}">Categorias</a>
         <a href="{{ url_for('main.ComoFunciona') }}">Como Funciona</a>
+        <a href="{{ url_for('main.minhas_propostas') }}">Minhas Propostas</a>
+        <a href="{{ url_for('main.meus_contratos') }}">Contratos</a>
         <a href="{{ url_for('main.perfil') }}" class="nav-perfil">
             {% if usuario and usuario.foto %}
                 <img class="nav-perfil-avatar"
@@ -190,11 +192,27 @@
                           placeholder="Descreva sua proposta..."></textarea>
             </div>
 
-            <button type="submit" class="btn-primary" style="width:100%;">
-                Enviar Proposta
-            </button>
-        </form>
+    <!-- AVISO DE TERMOS -->
+    <div class="termos-aviso">
+        <p>⚠️ <strong>Ao enviar esta proposta você concorda que:</strong></p>
+        <ul>
+            <li>Se aceita, um contrato será gerado automaticamente</li>
+            <li>Você se compromete a entregar o serviço no prazo informado</li>
+            <li>O valor proposto será o acordado no contrato</li>
+            <li>Ambas as partes deverão assinar o contrato digitalmente</li>
+        </ul>
+    </div>
 
+    <label style="display:flex; align-items:center; gap:10px; margin-bottom:16px; cursor:pointer; font-size:14px;">
+        <input type="checkbox" id="concordoTermos" required>
+        <span>Li e concordo com os termos acima</span>
+    </label>
+
+    <button type="submit" class="btn-primary" style="width:100%;">
+        Enviar Proposta
+    </button>
+    
+    </form>
     </div>
 </div>
 

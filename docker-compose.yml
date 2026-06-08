@@ -1,0 +1,20 @@
+services:
+  serviconnect:
+    build: ./projeto
+    container_name: serviconnect
+    restart: always
+    env_file:
+      - ./projeto/.env
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.serviconnect.rule=Host(`serviconnect.duckdns.org`)
+      - traefik.http.routers.serviconnect.entrypoints=websecure
+      - traefik.http.routers.serviconnect.tls=true
+      - traefik.http.routers.serviconnect.tls.certresolver=mytlschallenge
+      - traefik.http.services.serviconnect.loadbalancer.server.port=5000
+    networks:
+      - proxy_net
+
+networks:
+  proxy_net:
+    external: true
